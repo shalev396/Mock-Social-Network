@@ -25,7 +25,11 @@ router.post(
   validator.validateUser.createUserValidation,
   userController.createUser
 );
-
+router.post(
+  "/login",
+  validator.validateUser.loginUserValidation,
+  userController.loginUser
+);
 //encryption
 // async function encryption(str) {
 //   try {
