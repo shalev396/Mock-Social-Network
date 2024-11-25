@@ -25,7 +25,25 @@ const validateUser = {
   createUserValidation,
   loginUserValidation,
 };
+//posts
+const createPostValidation = (req, res, next) => {
+  if (
+    !req.body.title ||
+    !req.body.content ||
+    !req.body.media ||
+    !req.body.authorId
+  ) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
+const validatePost = {
+  createPostValidation,
+};
 const validator = {
   validateUser,
+  validatePost,
 };
 export default validator;
