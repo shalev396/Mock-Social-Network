@@ -39,8 +39,15 @@ const createPostValidation = (req, res, next) => {
   }
   next();
 };
+
+const getallPostValidation = (req, res, next) => {
+  //TODO: verify only our website can get and add uid to url for customized content
+
+  next();
+};
 const validatePost = {
   createPostValidation,
+  getallPostValidation,
 };
 const validator = {
   validateUser,

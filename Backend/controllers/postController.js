@@ -23,8 +23,17 @@ async function createPost(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+async function getAllPosts(req, res) {
+  try {
+    const allPosts = await Post.find();
+    res.status(200).json(allPosts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 const postController = {
   createPost,
+  getAllPosts,
 };
 export default postController;

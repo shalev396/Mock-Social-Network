@@ -25,4 +25,9 @@ router.post(
   validator.validatePost.createPostValidation,
   postController.createPost
 );
+router.get(
+  "/",
+  validator.validatePost.getallPostValidation,
+  postController.getAllPosts
+);
 export default router;
