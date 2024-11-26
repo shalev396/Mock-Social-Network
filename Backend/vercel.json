@@ -8,6 +8,18 @@
   ],
   "routes": [
     {
+      "src": "/api/users/(.*)",
+      "dest": "Backend/app.js"
+    },
+    {
+      "src": "/api/posts/(.*)",
+      "dest": "Backend/app.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "Backend/app.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "Backend/app.js"
     }
