@@ -1,3 +1,5 @@
 mongoDBShalev.env
 mongoDBSasha.env
 mongoDBRon.env
+Backend/.env
+Backend/node_modules
