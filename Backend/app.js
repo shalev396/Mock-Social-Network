@@ -3,7 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import dotenv from "dotenv";
-
+import cors from "cors";
 //import to js files
 import usersRoutes from "./routes/usersRoute.js";
 import postsRoutes from "./routes/postsRoute.js";
@@ -18,6 +18,7 @@ import util from "./utils/util.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3006;
+app.use(cors());
 //mongodb config
 mongoose
   .connect(process.env.MONGODB_URI, {
