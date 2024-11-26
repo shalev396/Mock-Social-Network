@@ -17,7 +17,7 @@ import util from "./utils/util.js";
 //configs
 dotenv.config();
 const app = express();
-const PORT = 3006; //3000-3005 are in use on my desktop
+const PORT = process.env.PORT || 3006;
 //mongodb config
 mongoose
   .connect(process.env.MONGODB_URI, {
