@@ -25,9 +25,16 @@ router.post(
   validator.validatePost.createPostValidation,
   postController.createPost
 );
+//get all posts
 router.get(
   "/",
   validator.validatePost.getallPostValidation,
   postController.getAllPosts
+);
+//get post by id
+router.get(
+  "/:id",
+  validator.validatePost.getPostByIdValidation,
+  postController.getPostById
 );
 export default router;

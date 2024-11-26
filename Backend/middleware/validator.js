@@ -45,9 +45,20 @@ const getallPostValidation = (req, res, next) => {
 
   next();
 };
+const getPostByIdValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+
+  next();
+};
+//object constructing
 const validatePost = {
   createPostValidation,
   getallPostValidation,
+  getPostByIdValidation,
 };
 const validator = {
   validateUser,

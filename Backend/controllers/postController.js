@@ -31,9 +31,18 @@ async function getAllPosts(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
-
+async function getPostById(req, res) {
+  try {
+    const id = req.params.id;
+    const post = await Post.find({ _id: id });
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 const postController = {
   createPost,
   getAllPosts,
+  getPostById,
 };
 export default postController;
