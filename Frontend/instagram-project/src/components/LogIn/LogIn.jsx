@@ -11,7 +11,7 @@ const LogIn = () => {
     "border border-slate-500 flex flex-col items-center p-4  mb-4 ";
 
   return (
-    <div>
+    <div className="width:">
       <div className={divContainer}>
         <img
           src={instImg}
