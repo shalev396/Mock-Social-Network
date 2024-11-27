@@ -7,9 +7,11 @@ import cors from "cors";
 //import to js files
 import usersRoutes from "./routes/usersRoute.js";
 import postsRoutes from "./routes/postsRoute.js";
+import commentsRoutes from "./routes/commentsRoute.js";
 
 //import util js file
 import util from "./utils/util.js";
+import comment from "./models/comment.js";
 
 //middleware js
 // import logRequest from "./middleware/logger.js";
@@ -35,6 +37,7 @@ app.use(morgan("tiny"));
 //routes
 app.use("/api/users", usersRoutes);
 app.use("/api/posts", postsRoutes);
+app.use("/api/comments", commentsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
