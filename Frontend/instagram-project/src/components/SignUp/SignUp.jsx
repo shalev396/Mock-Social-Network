@@ -3,12 +3,12 @@ import instImg from "../../assets/images/instagram-white (1).svg";
 // Links
 import { Link } from "react-router-dom";
 
-const SignIn = () => {
+const SignUp = () => {
   const inputCss =
-    "bg-[rgb(18,18,18)] border border-slate-300 rounded-sm  px-[8px] pt-[9px] pb-[7px] m-1 ";
-  const links = "text-blue-500 hover:text-blue-700";
+    "bg-[rgb(18,18,18)] border border-slate-300 rounded-sm  px-[8px] pt-[9px] pb-[7px] m-1 text-xs";
+  const links = "text-[#e0f1ff]";
   const divContainer =
-    "border border-slate-500 flex flex-col items-center p-4 ";
+    "border border-slate-500 flex flex-col items-center p-4  mb-4 ";
 
   return (
     <div>
@@ -18,8 +18,8 @@ const SignIn = () => {
           alt="instagram"
           className="inline-block w-[175px] h-[150px]"
         />
-        <div className="w-64 flex flex-col text-sm ">
-          <p className="text-center">
+        <div className="w-64 flex flex-col text-sm text-xs text-[#a8a8a8] text-center">
+          <p className="text-center text-sm font-bold pb-4">
             Sign up to see photos and videos from your friends.
           </p>
           <input
@@ -42,16 +42,19 @@ const SignIn = () => {
             type="text"
             placeholder="Username"
           ></input>
-          <p className="text-center">
+          <p className="pt-4">
             People who use our service may have uploaded your contact
             information to Instagram.
             <span>
-              <a href="https://www.facebook.com/help/instagram/261704639352628">
+              <a
+                className={links}
+                href="https://www.facebook.com/help/instagram/261704639352628"
+              >
                 Learn More
               </a>
             </span>
           </p>
-          <p className="text-center">
+          <p className="pt-4">
             By signing up, you agree to our &nbsp;
             <span>
               <a
@@ -77,7 +80,7 @@ const SignIn = () => {
           </p>
           <button
             type="submit"
-            className="bg-blue-500 font-bold px-4 border-0 rounded-md"
+            className="bg-[#0095f6] font-bold text-sm border-0 rounded-md mt-4 text-white py-2"
           >
             Sign Up
           </button>
@@ -93,4 +96,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
