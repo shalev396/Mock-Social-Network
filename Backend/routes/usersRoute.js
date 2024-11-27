@@ -25,10 +25,17 @@ router.post(
   validator.validateUser.createUserValidation,
   userController.createUser
 );
+//login user
 router.post(
   "/login",
   validator.validateUser.loginUserValidation,
   userController.loginUser
+);
+//verify before
+router.post(
+  "/verify",
+  validator.validateUser.verifyUniqueValidation,
+  userController.verifyUnique
 );
 //encryption
 // async function encryption(str) {

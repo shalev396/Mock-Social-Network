@@ -67,8 +67,31 @@ async function loginUser(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+async function verifyUnique(req, res) {
+  try {
+    const attempt = {
+      username: req.body.username,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+    };
+    let isUniqueEmail,
+      isUniqueUsername,
+      isUniquePhoneNumber = true;
+    //TODO: Fix to 1 .find()
+    if (await User.find({ username: username })) !isUniqueUsername;
+    if (await User.find({ email: email })) !isUniqueEmail;
+    if (await User.find({ phoneNumber: phoneNumber })) !isUniquePhoneNumber;
+
+    if (isUniqueEmail && isUniqueUsername && isUniquePhoneNumber) {
+      res.status(200).json({ Unique: true });
+    } else res.status(400).json({ Unique: false });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 const userController = {
   createUser,
   loginUser,
+  verifyUnique,
 };
 export default userController;

@@ -21,9 +21,18 @@ const loginUserValidation = (req, res, next) => {
   }
   next();
 };
+const verifyUniqueValidation = (req, res, next) => {
+  if (!req.body.username && !req.body.email && !req.body.phoneNumber) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
 const validateUser = {
   createUserValidation,
   loginUserValidation,
+  verifyUniqueValidation,
 };
 //posts
 const createPostValidation = (req, res, next) => {
