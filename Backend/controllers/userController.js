@@ -69,26 +69,41 @@ async function loginUser(req, res) {
 }
 async function verifyUnique(req, res) {
   try {
-    const attempt = {
-      username: req.body.username,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-    };
-    let isUniqueEmail,
-      isUniqueUsername,
-      isUniquePhoneNumber = true;
-    //TODO: Fix to 1 .find()
-    if (await User.find({ username: username })) !isUniqueUsername;
-    if (await User.find({ email: email })) !isUniqueEmail;
-    if (await User.find({ phoneNumber: phoneNumber })) !isUniquePhoneNumber;
+    const { username, email, phoneNumber } = req.body;
 
-    if (isUniqueEmail && isUniqueUsername && isUniquePhoneNumber) {
-      res.status(200).json({ Unique: true });
-    } else res.status(400).json({ Unique: false });
+    // Single query to check for any matching documents
+    const existingUser = await User.findOne({
+      $or: [
+        { username: username },
+        { email: email },
+        { phoneNumber: phoneNumber },
+      ],
+    });
+
+    const isUniqueUsername =
+      !existingUser || existingUser.username !== username;
+    const isUniqueEmail = !existingUser || existingUser.email !== email;
+    const isUniquePhoneNumber =
+      !existingUser || existingUser.phoneNumber !== phoneNumber;
+
+    if (isUniqueUsername && isUniqueEmail && isUniquePhoneNumber) {
+      return res.status(200).json({ Unique: true });
+    } else {
+      return res.status(400).json({
+        Unique: false,
+        details: {
+          username: isUniqueUsername,
+          email: isUniqueEmail,
+          phoneNumber: isUniquePhoneNumber,
+        },
+      });
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error verifying uniqueness:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }
+
 const userController = {
   createUser,
   loginUser,
