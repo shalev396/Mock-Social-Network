@@ -1,4 +1,4 @@
-// const API_BASE_URL = "http://localhost:3006/api";
+const API_BASE_URL = "http://localhost:3006/api";
 //un note this^
 // Dummy data arrays
 const dummyUsers = [

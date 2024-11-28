@@ -37,16 +37,5 @@ router.post(
   validator.validateUser.verifyUniqueValidation,
   userController.verifyUnique
 );
-//encryption
-// async function encryption(str) {
-//   try {
-//     const hash = await bcrypt.hash(str + process.env.ENCRYPTION_KEY, 10);
-//     return hash;
-//   } catch (err) {
-//     throw new Error("Error in encryption: " + err.message);
-//   }
-// }
-// async function compareHash(str, hashedPassword) {
-//   return await bcrypt.compare(str + process.env.ENCRYPTION_KEY, hashedPassword);
-// }
+
 export default router;

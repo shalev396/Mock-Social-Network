@@ -11,7 +11,7 @@ import commentsRoutes from "./routes/commentsRoute.js";
 
 //import util js file
 import util from "./utils/util.js";
-import comment from "./models/comment.js";
+// import comment from "./models/comment.js";
 
 //middleware js
 // import logRequest from "./middleware/logger.js";
@@ -20,7 +20,13 @@ import comment from "./models/comment.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3006;
-app.use(cors());
+app.use(
+  cors({
+    // origin: "http://localhost:5173", // Your frontend's origin
+    credentials: true, // Enable credentials (cookies, etc.)
+  })
+);
+
 //mongodb config
 mongoose
   .connect(process.env.MONGODB_URI, {
