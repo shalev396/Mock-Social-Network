@@ -58,7 +58,7 @@ async function loginUser(req, res) {
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
 
     res.cookie("jwt", token, {
-      httpOnly: true, // Prevents JavaScript access to the cookie
+      httpOnly: false, // Prevents JavaScript access to the cookie
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
       sameSite: "strict", // Protects against CSRF
       maxAge: 3600000, // 1 hour in milliseconds
