@@ -63,8 +63,8 @@ async function loginUser(req, res) {
       sameSite: "strict", // Protects against CSRF
       maxAge: 3600000, // 1 hour in milliseconds
     });
-
-    return res.status(200).json({ message: "Login successful", token });
+    user.password = undefined;
+    return res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
     console.error("Error during login:", error);
     return res.status(500).json({ message: "Internal server error" });
