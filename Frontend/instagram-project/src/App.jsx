@@ -7,6 +7,8 @@ import SignUp from "./components/SignUp/SignUp";
 import LogIn from "./components/LogIn/LogIn";
 import HomePage from "./components/homePage/HomePage"; // Fix import for PascalCase
 
+
+
 function App() {
   return (
     <div className="bg-black w-screen h-screen m-0 p-0 text-white">
