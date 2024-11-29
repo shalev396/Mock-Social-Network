@@ -9,6 +9,8 @@
 7. TODO NOW modify cerate user route
 8. encrypt passwords
 9. use jwt
+10. make route for single user detail
+11. add jwt to signup
 
 ### notes
 
