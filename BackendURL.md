@@ -4,106 +4,263 @@
 
 http://85.250.87.24:3006
 
-## Users Endpoints
+## Authentication
+
+### JWT Token Format
+
+The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon login and should be included in subsequent requests.
+
+#### Token Location
+
+1. Authorization Header:
+
+   ```javascript
+   headers: {
+      Authorization: "Bearer <your_jwt_token>",
+    };
+   ```
+
+2. Cookie (httpOnly):
+
+- Name: 'jwt'
+- Max Age: 1 hour
+- Secure: true (in production)
+- SameSite: strict
+
+### Cookie Configuration
+
+```javascript
+  {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 3600000 // 1 hour
+  }
+```
+
+## User Endpoints
 
 ### 1. Create User
 
-- **POST** `/api/users`
+- **Method:** POST
+- **URL:** `/api/users`
+- **Description:** Creates a new user account with the provided information
+- **Authentication:** None required
 - **Body Requirements:**
-  ```json
-  {
-    "username": "String (unique)",
-    "email": "String (unique)",
-    "password": "String",
-    "birthday": "Date",
-    "phoneNumber": "String (unique)",
-    "profilePic": "String (optional)"
-  }
-  ```
+
+```json
+{
+  "username": "String (unique)",
+  "email": "String (unique)",
+  "password": "String",
+  "birthday": "Date",
+  "phoneNumber": "String (unique)",
+  "profilePic": "String (optional)"
+}
+```
+
 - **Response Example:**
-  ```json
-  {
-    "username": "john_doe",
-    "email": "john@example.com",
-    "phoneNumber": "+1234567890",
-    "profilePic": "https://example.com/pic.jpg",
-    "bio": "",
-    "followers": [],
-    "following": [],
-    "isPublic": true,
-    "_id": "123456789",
-    "createdAt": "2024-03-15T12:00:00.000Z"
-  }
-  ```
 
-### 2. Login User
+```json
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "phoneNumber": "+1234567890",
+  "profilePic": "https://example.com/pic.jpg",
+  "bio": "",
+  "followers": [],
+  "following": [],
+  "isPublic": true,
+  "id": "123456789",
+  "createdAt": "2024-03-15T12:00:00.000Z"
+}
+```
 
-- **POST** `/api/users/login`
+### 2. Verify Unique Fields
+
+- **Method:** POST
+- **URL:** `/api/users/verify`
+- **Description:** Checks if username, email, and phone number are unique
+- **Authentication:** None required
 - **Body Requirements:**
-  ```json
-  {
-    "username": "String (can be username, email, or phoneNumber)",
-    "password": "String"
+
+```json
+{
+  "username": "String (optional)",
+  "email": "String (optional)",
+  "phoneNumber": "String (optional)"
+}
+```
+
+- **Response Example:**
+
+```json
+{
+  "Unique": false,
+  "details": {
+    "username": true,
+    "email": false,
+    "phoneNumber": true
   }
-  ```
-- **Response:** Returns user object if credentials are valid
+}
+```
+
+### 3. Login User
+
+- **Method:** POST
+- **URL:** `/api/users/login`
+- **Description:** Authenticates user and returns JWT token
+- **Authentication:** None required
+- **Body Requirements:**
+
+```json
+{
+  "username": "String (can be username, email, or phoneNumber)",
+  "password": "String"
+}
+```
+
+- **Response Example:**
+
+```json
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
 
 ## Posts Endpoints
 
 ### 1. Create Post
 
-- **POST** `/api/posts`
+- **Method:** POST
+- **URL:** `/api/posts`
+- **Description:** Creates a new post
+- **Authentication:** Required
 - **Body Requirements:**
-  ```json
-  {
-    "title": "String",
-    "content": "String",
-    "media": "String (URL)",
-    "authorId": "String"
-  }
-  ```
+
+```json
+{
+  "title": "String",
+  "content": "String",
+  "media": "String (URL)",
+  "authorId": "String"
+}
+```
+
 - **Response Example:**
-  ```json
-  {
-    "title": "My Post",
-    "content": "Post content",
-    "media": "https://example.com/image.jpg",
-    "authorId": "123456789",
-    "likes": [],
-    "commentsCount": 0,
-    "_id": "987654321",
-    "createdAt": "2024-03-15T12:00:00.000Z"
-  }
-  ```
+
+```json
+{
+  "title": "My Post",
+  "content": "Post content",
+  "media": "https://example.com/image.jpg",
+  "authorId": "123456789",
+  "likes": [],
+  "commentsCount": 0,
+  "id": "987654321",
+  "createdAt": "2024-03-15T12:00:00.000Z"
+}
+```
 
 ### 2. Get All Posts
 
-- **GET** `/api/posts`
-- **Response:** Array of post objects
+- **Method:** GET
+- **URL:** `/api/posts`
+- **Description:** Retrieves all posts
+- **Authentication:** Required
+- **Body Requirements:** None
+- **Response Example:**
+
+```json
+[
+  {
+    "title": "Post 1",
+    "content": "Content 1",
+    "media": "https://example.com/image1.jpg",
+    "authorId": "123456789",
+    "likes": [],
+    "commentsCount": 0,
+    "id": "987654321",
+    "createdAt": "2024-03-15T12:00:00.000Z"
+  }
+]
+```
 
 ### 3. Get Post by ID
 
-- **GET** `/api/posts/:id`
-- **Response:** Single post object
+- **Method:** GET
+- **URL:** `/api/posts/:id`
+- **Description:** Retrieves a specific post by ID
+- **Authentication:** Required
+- **Parameters:** id (post ID)
+- **Response Example:**
 
-## Comments Endpoints not yet implemented
+```json
+{
+  "title": "Post 1",
+  "content": "Content 1",
+  "media": "https://example.com/image1.jpg",
+  "authorId": "123456789",
+  "likes": [],
+  "commentsCount": 0,
+  "id": "987654321",
+  "createdAt": "2024-03-15T12:00:00.000Z"
+}
+```
 
-### 1. Get Comments for Post
+## Comments Endpoints
 
-- **GET** `/api/comments/post/:postId`
-- **Response:** Array of comments for specified post
+### 1. Create Comment
 
-### 2. Create Comment
-
-- **POST** `/api/comments`
+- **Method:** POST
+- **URL:** `/api/comments`
+- **Description:** Creates a new comment on a post
+- **Authentication:** Required
 - **Body Requirements:**
-  ```json
+
+```json
+{
+  "postId": "String",
+  "text": "String",
+  "authorId": "String"
+}
+```
+
+- **Response Example:**
+
+```json
+{
+  "postId": "987654321",
+  "text": "Great post!",
+  "authorId": "123456789",
+  "likes": [],
+  "id": "456789123",
+  "createdAt": "2024-03-15T12:00:00.000Z"
+}
+```
+
+### 2. Get Comments by Post ID
+
+- **Method:** GET
+- **URL:** `/api/comments/post/:id`
+- **Description:** Retrieves all comments for a specific post
+- **Authentication:** Required
+- **Parameters:** id (post ID)
+- **Response Example:**
+
+```json
+[
   {
-    "postId": "String",
-    "text": "String",
-    "authorId": "String"
+    "postId": "987654321",
+    "text": "Comment 1",
+    "authorId": "123456789",
+    "likes": [],
+    "id": "456789123",
+    "createdAt": "2024-03-15T12:00:00.000Z"
   }
-  ```
+]
+```
 
 ## Extra Features (Stretch Goals)
 

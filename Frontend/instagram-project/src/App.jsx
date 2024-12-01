@@ -2,25 +2,33 @@ import "./App.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { Provider } from "react-redux";
+
 // Import components
 import SignUp from "./components/SignUp/SignUp";
 import LogIn from "./components/LogIn/LogIn";
-import HomePage from "./components/homePage/HomePage"; // Fix import for PascalCase
-import Post from "./components/Post/Post"
 
+import BirthDate from "./components/BirthDate/BirthDate";
+import store from "./Redux/store";
 
 function App() {
   return (
-    <div className="bg-black w-screen h-screen m-0 p-0 text-white">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LogIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/homepage" element={<HomePage />} />
-          <Route path="/p/:postid" element={<Post />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <>
+      <Provider store={store}>
+        <div className="bg-black w-screen h-screen m-0 p-0 text-white">
+          <div>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<LogIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/birthdate" element={<BirthDate />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+        </div>
+      </Provider>
+    </>
+
   );
 }
 
