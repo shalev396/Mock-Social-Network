@@ -1,8 +1,17 @@
 import { useState } from "react";
 import instImg from "../../assets/images/instagram-white (1).svg";
 
+import { useDispatch } from "react-redux";
+import {
+  setEmail,
+  setPhoneNumber,
+  setUsername,
+  setPassword,
+} from "../../Redux/userSlice.js";
+
 // Links
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import BirthDate from "../BirthDate/BirthDate.jsx";
 
 const SignUp = () => {
   const [newUsername, setNewUsername] = useState("");
@@ -12,22 +21,25 @@ const SignUp = () => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
 
   const handleEmailOfPhone = (e) => {
+    e.preventDefault();
     const value = e.target.value;
     setEmailOrPhone(value);
     if (value.includes("@")) {
       setNewEmail(value);
+      setNewPhNumber("");
     } else {
       setNewPhNumber(value);
+      setNewEmail("");
     }
   };
 
-  const saveToStorage = () => {
-    sessionStorage.setItem("username", newUsername);
-    sessionStorage.setItem("password", newPassword);
-    sessionStorage.setItem("email", newEmail);
-    sessionStorage.setItem("phone", newPhNumber);
-    sessionStorage.setItem("emailOrPhone", emailOrPhone);
-    console.log("Data saved to sessionStorage");
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    dispatch(setPhoneNumber(newPhNumber));
+    dispatch(setEmail(newEmail));
+    dispatch(setUsername(newUsername));
+    dispatch(setPassword(newPassword));
   };
 
   const inputCss =
@@ -111,10 +123,9 @@ const SignUp = () => {
             </span>
           </p>
 
-          <Link to="birthdate">
+          <Link to="/birthdate">
             <button
-              onClick={saveToStorage}
-              type="submit"
+              onClick={handleSubmit}
               className="bg-[#0095f6] font-bold text-sm border-0 rounded-md mt-4 text-white py-2 w-[248px]"
             >
               Sign Up

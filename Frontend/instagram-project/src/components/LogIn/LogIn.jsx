@@ -14,7 +14,7 @@ const LogIn = () => {
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
-        "http://85.250.87.24:3006/api/users/login",
+        "http://85.250.88.33:3006/api/users/login",
         {
           username: username,
           password: password,
