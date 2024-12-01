@@ -11,6 +11,14 @@ import LogIn from "./components/LogIn/LogIn";
 import BirthDate from "./components/BirthDate/BirthDate";
 import store from "./Redux/store";
 
+
+////////
+
+import HomePage from "./components/homePage/HomePage"; // Fix import for PascalCase
+import Post from "./components/Post/Post"
+
+
+
 function App() {
   return (
     <>
@@ -22,6 +30,8 @@ function App() {
                 <Route path="/" element={<LogIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/birthdate" element={<BirthDate />} />
+                <Route path="/homepage" element={<HomePage />} />
+                <Route path="/p/:postid" element={<Post />} />
               </Routes>
             </BrowserRouter>
           </div>

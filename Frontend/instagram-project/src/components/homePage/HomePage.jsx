@@ -11,7 +11,7 @@ const HomePage = () => {
       const response = await axios.get(`http://85.250.88.33:3006/api/posts`
         , {
           headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDlmZTYwMmIxOTc2ZDNlNjk2YWEyZCIsInVzZXJuYW1lIjoicm9uICIsImVtYWlsIjoiMTIxQGdtYS5jb20iLCJpYXQiOjE3MzMwNTAwMTUsImV4cCI6MTczMzA1MzYxNX0.Mce-ZcRUw3kSVhb-fs2ISYCNLNYwr3mraugYsv6ohbY',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDlmZTYwMmIxOTc2ZDNlNjk2YWEyZCIsInVzZXJuYW1lIjoicm9uICIsImVtYWlsIjoiMTIxQGdtYS5jb20iLCJpYXQiOjE3MzMwNTkyNjksImV4cCI6MTczMzA2Mjg2OX0.YsAHNnVuDmvuU0YSgjiahZXxSi3trr1V0MT-3252znE',
           },
         }
       );
