@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+
 const HomePage = () => {
   const [posts, setPosts] = useState([]); // Initialize posts as an empty array
 
   // Fetch posts from API
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://85.250.87.24:3006/api/posts`);
+      const response = await axios.get(`http://85.250.88.33:3006/api/posts`
+        , {
+          headers: {
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDlmZTYwMmIxOTc2ZDNlNjk2YWEyZCIsInVzZXJuYW1lIjoicm9uICIsImVtYWlsIjoiMTIxQGdtYS5jb20iLCJpYXQiOjE3MzMwNTAwMTUsImV4cCI6MTczMzA1MzYxNX0.Mce-ZcRUw3kSVhb-fs2ISYCNLNYwr3mraugYsv6ohbY',
+          },
+        }
+      );
+
       setPosts(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
