@@ -1,17 +1,43 @@
+import { useState } from "react";
 import instImg from "../../assets/images/instagram-white (1).svg";
 
 // Links
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const SignUp = () => {
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPhNumber, setNewPhNumber] = useState("");
+  const [emailOrPhone, setEmailOrPhone] = useState("");
+
+  const handleEmailOfPhone = (e) => {
+    const value = e.target.value;
+    setEmailOrPhone(value);
+    if (value.includes("@")) {
+      setNewEmail(value);
+    } else {
+      setNewPhNumber(value);
+    }
+  };
+
+  const saveToStorage = () => {
+    sessionStorage.setItem("username", newUsername);
+    sessionStorage.setItem("password", newPassword);
+    sessionStorage.setItem("email", newEmail);
+    sessionStorage.setItem("phone", newPhNumber);
+    sessionStorage.setItem("emailOrPhone", emailOrPhone);
+    console.log("Data saved to sessionStorage");
+  };
+
   const inputCss =
     "bg-[rgb(18,18,18)] border border-slate-300 rounded-sm  px-[8px] pt-[9px] pb-[7px] m-1 text-xs";
   const links = "text-[#e0f1ff]";
   const divContainer =
-    "border border-slate-500 flex flex-col items-center p-4  mb-4 ";
+    "border border-slate-500 flex flex-col items-center p-4 w-[425px]";
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center gap-4  h-screen">
       <div className={divContainer}>
         <img
           src={instImg}
@@ -26,11 +52,15 @@ const SignUp = () => {
             className={inputCss}
             type="text"
             placeholder="Mobile Number or Email"
+            value={emailOrPhone}
+            onChange={handleEmailOfPhone}
           ></input>
           <input
             className={inputCss}
             type="password"
             placeholder="Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           ></input>
           <input
             className={inputCss}
@@ -41,6 +71,8 @@ const SignUp = () => {
             className={inputCss}
             type="text"
             placeholder="Username"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
           ></input>
           <p className="pt-4">
             People who use our service may have uploaded your contact
@@ -78,12 +110,16 @@ const SignUp = () => {
               </a>
             </span>
           </p>
-          <button
-            type="submit"
-            className="bg-[#0095f6] font-bold text-sm border-0 rounded-md mt-4 text-white py-2"
-          >
-            Sign Up
-          </button>
+
+          <Link to="birthdate">
+            <button
+              onClick={saveToStorage}
+              type="submit"
+              className="bg-[#0095f6] font-bold text-sm border-0 rounded-md mt-4 text-white py-2 w-[248px]"
+            >
+              Sign Up
+            </button>
+          </Link>
         </div>
       </div>
       <div className={divContainer}>
