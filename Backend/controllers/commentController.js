@@ -46,7 +46,7 @@ async function getCommentByPostId(req, res) {
         .json({ message: "No comments found for this post" });
     }
 
-    // Format the response to match the API documentation
+    // Format
     const formattedComments = comments.map((comment) => ({
       postId: comment.postId,
       text: comment.text,
