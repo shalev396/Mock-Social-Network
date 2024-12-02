@@ -43,8 +43,8 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
 ### 1. Create User
 
 - **Method:** POST
-- **URL:** `/api/users`
-- **Description:** Creates a new user account with the provided information
+- **URL:** `/api/users/signup`
+- **Description:** Creates a new user account
 - **Authentication:** None required
 - **Body Requirements:**
 
@@ -63,16 +63,14 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
 
 ```json
 {
-  "username": "john_doe",
-  "email": "john@example.com",
-  "phoneNumber": "+1234567890",
-  "profilePic": "https://example.com/pic.jpg",
-  "bio": "",
-  "followers": [],
-  "following": [],
-  "isPublic": true,
-  "id": "123456789",
-  "createdAt": "2024-03-15T12:00:00.000Z"
+  "user": {
+    "username": "john_doe",
+    "email": "john@example.com",
+    "phoneNumber": "+1234567890",
+    "profilePic": "https://example.com/pic.jpg",
+    "id": "123456789"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
@@ -125,7 +123,13 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
 ```json
 {
   "message": "Login successful",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "123456789",
+    "username": "john_doe",
+    "email": "john@example.com",
+    "profilePic": "https://example.com/pic.jpg"
+  }
 }
 ```
 
@@ -167,9 +171,8 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
 
 - **Method:** GET
 - **URL:** `/api/posts`
-- **Description:** Retrieves all posts
+- **Description:** Retrieves all posts with their first comments
 - **Authentication:** Required
-- **Body Requirements:** None
 - **Response Example:**
 
 ```json
@@ -178,11 +181,24 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
     "title": "Post 1",
     "content": "Content 1",
     "media": "https://example.com/image1.jpg",
-    "authorId": "123456789",
+    "authorId": {
+      "username": "john_doe",
+      "email": "john@example.com",
+      "profilePic": "https://example.com/pic.jpg"
+    },
     "likes": [],
     "commentsCount": 0,
     "id": "987654321",
-    "createdAt": "2024-03-15T12:00:00.000Z"
+    "createdAt": "2024-03-15T12:00:00.000Z",
+    "firstComment": {
+      "_id": "commentId",
+      "text": "First comment",
+      "createdAt": "2024-03-15T12:01:00.000Z",
+      "author": {
+        "username": "jane_doe",
+        "profilePic": "https://example.com/jane.jpg"
+      }
+    }
   }
 ]
 ```
@@ -193,7 +209,6 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
 - **URL:** `/api/posts/:id`
 - **Description:** Retrieves a specific post by ID
 - **Authentication:** Required
-- **Parameters:** id (post ID)
 - **Response Example:**
 
 ```json
@@ -201,7 +216,10 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
   "title": "Post 1",
   "content": "Content 1",
   "media": "https://example.com/image1.jpg",
-  "authorId": "123456789",
+  "authorId": {
+    "username": "john_doe",
+    "email": "john@example.com"
+  },
   "likes": [],
   "commentsCount": 0,
   "id": "987654321",
@@ -246,7 +264,6 @@ The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon l
 - **URL:** `/api/comments/post/:id`
 - **Description:** Retrieves all comments for a specific post
 - **Authentication:** Required
-- **Parameters:** id (post ID)
 - **Response Example:**
 
 ```json

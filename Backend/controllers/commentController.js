@@ -2,20 +2,27 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 //import models
 import Comment from "../models/comment.js";
+import Post from "../models/post.js";
 
 async function createComment(req, res) {
   try {
     const comment = new Comment({
-      postId: req.body.postId,
-      authorId: req.body.authorId,
+      postId: new mongoose.Types.ObjectId(req.body.postId),
+      authorId: new mongoose.Types.ObjectId(req.body.authorId),
       text: req.body.text,
     });
 
-    console.log(comment);
     const newComment = await comment.save();
+
+    // Update the post's comment count
+    await Post.findByIdAndUpdate(req.body.postId, {
+      $inc: { commentsCount: 1 },
+    });
+
     res.status(201).json(newComment);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -1,11 +1,11 @@
 //Users
 const createUserValidation = (req, res, next) => {
   if (
-    !req.body.username ||
-    !req.body.email ||
-    !req.body.password ||
-    !req.body.birthday ||
-    !req.body.phoneNumber
+    !req.body.username
+    // !req.body.email ||
+    // !req.body.password ||
+    // !req.body.birthday ||
+    // !req.body.phoneNumber
   ) {
     return res.status(400).send({
       message: "Missing Filed",
