@@ -2,10 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../Redux/authSlice";
+import { login } from "../../Redux/authSlice"; // Redux action to save user data
 import instImg from "../../assets/images/instagram-white (1).svg";
-import Cookies from "js-cookie";
-
 import { Link } from "react-router-dom";
 
 const LogIn = () => {
@@ -16,9 +14,6 @@ const LogIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Enable cookies in Axios globally
-  axios.defaults.withCredentials = false; //true
-
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
@@ -26,17 +21,19 @@ const LogIn = () => {
         { username, password }
       );
 
-      // Save to Redux state
+      // Save token to sessionStorage
+      sessionStorage.setItem("authToken", data.token);
+
+      // Save user data to Redux
       dispatch(login({ token: data.token, user: data.user }));
 
-      // Save token to cookies
-      Cookies.set("authToken", data.token, { expires: 7 });
-        console.log(data);
-        
+      console.log("Login successful:", data);
+
       // Navigate to homepage
       navigate("/homepage");
     } catch (error) {
       setWrongPassword(true);
+      console.error("Login failed:", error);
     }
   };
 

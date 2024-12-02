@@ -1,28 +1,23 @@
-import "./App.css";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 
-// Import components
-import SignUp from "./components/SignUp/SignUp";
 import LogIn from "./components/LogIn/LogIn";
-import BirthDate from "./components/BirthDate/BirthDate";
+import SignUp from "./components/SignUp/SignUp";
 import HomePage from "./components/homePage/HomePage";
 import Post from "./components/Post/Post";
 import CommentsPage from "./components/CommentsPage/CommentsPage";
-import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
-import AppInitializer from "./Applnitializer"; // Import AppInitializer
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Provider store={store}>
-      <AppInitializer /> {/* Initializes authentication state */}
-      <div className="bg-black w-screen h-screen m-0 p-0 text-white">
+      <div className="bg-black text-white min-h-screen flex items-center justify-center">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LogIn />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/birthdate" element={<BirthDate />} />
             <Route
               path="/homepage"
               element={
