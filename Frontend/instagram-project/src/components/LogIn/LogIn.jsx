@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../Redux/authSlice";
 import instImg from "../../assets/images/instagram-white (1).svg";
+import Cookies from "js-cookie";
 
-// Links
 import { Link } from "react-router-dom";
 
 const LogIn = () => {
@@ -11,21 +13,30 @@ const LogIn = () => {
   const [password, setPassword] = useState("");
   const [wrongPassword, setWrongPassword] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Enable cookies in Axios globally
+  axios.defaults.withCredentials = false; //true
+
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
         "http://85.250.88.33:3006/api/users/login",
-        {
-          username: username,
-          password: password,
-        }
+        { username, password }
       );
-      console.log(data);
-      return { data };
+
+      // Save to Redux state
+      dispatch(login({ token: data.token, user: data.user }));
+
+      // Save token to cookies
+      Cookies.set("authToken", data.token, { expires: 7 });
+        console.log(data);
+        
+      // Navigate to homepage
+      navigate("/homepage");
     } catch (error) {
       setWrongPassword(true);
-      // console.error("Log In failed, try again:", error);
-      return null;
     }
   };
 
@@ -36,9 +47,7 @@ const LogIn = () => {
     "border border-slate-500 flex flex-col items-center p-4 w-[425px]";
 
   return (
-
     <div className="flex flex-col items-center justify-center gap-4 h-screen">
-
       <div className={divContainer}>
         <img
           src={instImg}
@@ -52,26 +61,23 @@ const LogIn = () => {
             placeholder="Phone number, username or email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-          ></input>
+          />
           <input
             className={inputCss}
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></input>
+          />
           <button
-            onClick={() => {
-              tryLogIn(username, password);
-            }}
-            type="submit"
+            onClick={() => tryLogIn(username, password)}
             className="bg-[#0095f6] font-bold text-sm border-0 rounded-md mt-4 text-white py-2"
           >
             Log In
           </button>
           {wrongPassword && (
             <p className="text-red-500 m-4">
-              Sorry, one or more of your details are incorrect. Please,try again
+              Sorry, one or more of your details are incorrect. Please try again
             </p>
           )}
         </div>
