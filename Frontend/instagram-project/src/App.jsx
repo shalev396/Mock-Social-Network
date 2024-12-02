@@ -8,10 +8,11 @@ import { Provider } from "react-redux";
 // Import components
 import SignUp from "./components/SignUp/SignUp";
 import LogIn from "./components/LogIn/LogIn";
+
 import BirthDate from "./components/BirthDate/BirthDate";
 import store from "./Redux/store";
 
-import HomePage from "./components/HomePage/HomePage.jsx";
+
 import Explore from "./components/Explore/Explore.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import AddPage from "./components/AddPage/AddPage.jsx";
@@ -82,6 +83,14 @@ function BottomNav() {
   );
 }
 
+
+////////
+
+import HomePage from "./components/homePage/HomePage"; // Fix import for PascalCase
+import Post from "./components/Post/Post"
+import CommentsPage from "./components/CommentsPage/CommentsPage";
+
+
 function App() {
   return (
     <>
@@ -98,6 +107,8 @@ function App() {
                 <Route path="/add" element={<AddPage />} />
                 <Route path="/reels" element={<ReelsPage />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/p/:postid" element={<Post />} />
+                <Route path="/p/:postid/comments" element={<CommentsPage />} />
               </Routes>
               <BottomNav />
             </BrowserRouter>
@@ -105,7 +116,40 @@ function App() {
         </div>
       </Provider>
     </>
+
   );
 }
 
 export default App;
+
+
+
+// import "./App.css";
+
+// import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+
+// import HomePage from './pages/HomePage';
+// import  Explore  from './pages/Explore';
+// import Inbox from './pages/Profile';
+// import Comments from './pages/Comments';
+// import RootLayout from './pages/Root';
+
+
+
+// const router = createBrowserRouter([
+//   {path: '/',
+//     element: <RootLayout />,
+//     children:[
+
+//       {index: true , element: <HomePage />},
+//       {path: '/profile/:profileid', element: <Profile />},
+//       {path: '/prof', element: <Explore/>},
+//       {path: '/profile/:profileid/inbox', element: <Inbox/>},
+//       {path: '/profile/comments', element: <Comments />}
+//   ] }
+// ])
+// function App() {
+//   return <RouterProvider router= {router}/>;
+// }
+
+// export default App;
