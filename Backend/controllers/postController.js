@@ -28,12 +28,12 @@ async function createPost(req, res) {
 }
 async function getAllPosts(req, res) {
   try {
-    // Get all posts and populate author details
+    //populate author details
     const allPosts = await Post.find()
       .populate("authorId", "username profilePic")
       .lean();
 
-    // First get all comments
+    //first c
     const allComments = await Comment.find()
       .populate("authorId", "username profilePic")
       .sort({ createdAt: 1 })
@@ -41,7 +41,7 @@ async function getAllPosts(req, res) {
 
     console.log("Total comments found:", allComments.length);
 
-    // Add first comment with author details for each post
+    //first c+author
     const postsWithComments = allPosts.map((post) => {
       const postIdString = post._id.toString();
       const commentsForPost = allComments.filter(

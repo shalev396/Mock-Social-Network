@@ -19,7 +19,7 @@ const app = express();
 const PORT = process.env.PORT || 3006;
 app.use(
   cors({
-    credentials: true, // Enable credentials (cookies, etc.)
+    credentials: false, // Enable credentials (cookies, etc.)
   })
 );
 
