@@ -32,10 +32,39 @@ async function createComment(req, res) {
 async function getCommentByPostId(req, res) {
   try {
     const id = req.params.id;
-    //filter by post id
-    const comments = await Comment.find({ postId: id });
-    res.status(200).json(comments);
+    console.log(id);
+
+    const comments = await Comment.find({ postId: id })
+      .populate("authorId", "username profilePic") //  author
+      .sort({ createdAt: -1 })
+      .lean();
+    console.log(comments);
+
+    if (!comments) {
+      return res
+        .status(404)
+        .json({ message: "No comments found for this post" });
+    }
+
+    // Format the response to match the API documentation
+    const formattedComments = comments.map((comment) => ({
+      postId: comment.postId,
+      text: comment.text,
+      authorId: comment.authorId._id,
+      author: {
+        username: comment.authorId.username,
+        profilePic: comment.authorId.profilePic,
+      },
+      likes: comment.likes,
+      id: comment._id,
+      createdAt: comment.createdAt,
+    }));
+
+    res.status(200).json(formattedComments);
   } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid post ID format" });
+    }
     res.status(500).json({ message: error.message });
   }
 }
