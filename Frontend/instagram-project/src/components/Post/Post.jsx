@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+
+import Body from "./body";
 import Header from "./Header";
 
 const Post = () => {
@@ -14,7 +16,7 @@ const Post = () => {
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDlmZTYwMmIxOTc2ZDNlNjk2YWEyZCIsInVzZXJuYW1lIjoicm9uICIsImVtYWlsIjoiMTIxQGdtYS5jb20iLCJpYXQiOjE3MzMwNTc0MzIsImV4cCI6MTczMzA2MTAzMn0.pCRCv_9ykw93q1wspfzEFeS7EWHPoCddr6dHhk6E2LQ",
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGQ5OTNhMDU5MDI3MGU4YmJmM2FiZCIsInVzZXJuYW1lIjoiMTIzIiwiZW1haWwiOiIiLCJpYXQiOjE3MzMxNDE0MzQsImV4cCI6MTczMzE0NTAzNH0._J1sf_sjpPUc-Unr-AZGdgbtTSycxlQG-N-wXVQQlAQ",
           },
         }
       );
@@ -33,14 +35,20 @@ const Post = () => {
     <div>
       {post ? (
         <>
-          {/* Pass the authorId as a prop to Header */}
-          <Header authorId={post.title}
+          {/* Pass the auth name as the post title for now,  the  media as the profile pic for now */}
+          <Header authorName={post.title}
           profilePic={post.media}
           media= {post.media}
           />
-          <div className="p-4">
 
-          </div>
+          {/* body part */}
+          <Body 
+          commentsCount={post.commentsCount}
+          likes= {post.likes.length}
+          content={post.content}
+          postId= {post._id}
+          />
+
         </>
       ) : (
         "Loading..."

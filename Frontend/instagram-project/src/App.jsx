@@ -16,6 +16,8 @@ import store from "./Redux/store";
 
 import HomePage from "./components/homePage/HomePage"; // Fix import for PascalCase
 import Post from "./components/Post/Post"
+import CommentsPage from "./components/CommentsPage/CommentsPage";
+
 
 
 
@@ -32,6 +34,8 @@ function App() {
                 <Route path="/birthdate" element={<BirthDate />} />
                 <Route path="/homepage" element={<HomePage />} />
                 <Route path="/p/:postid" element={<Post />} />
+                <Route path="/p/:postid/comments" element={<CommentsPage />} />
+
               </Routes>
             </BrowserRouter>
           </div>
