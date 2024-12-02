@@ -36,7 +36,9 @@ const LogIn = () => {
     "border border-slate-500 flex flex-col items-center p-4 w-[425px]";
 
   return (
+
     <div className="flex flex-col items-center justify-center gap-4 h-screen">
+
       <div className={divContainer}>
         <img
           src={instImg}
