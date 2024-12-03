@@ -11,7 +11,6 @@ import {
 
 // Links
 import { Link } from "react-router-dom";
-import BirthDate from "../BirthDate/BirthDate.jsx";
 
 const SignUp = () => {
   const [newUsername, setNewUsername] = useState("");
