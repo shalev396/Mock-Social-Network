@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 
-import LogIn from "./components/LogIn/LogIn";
 import SignUp from "./components/SignUp/SignUp";
 import LogIn from "./components/LogIn/LogIn";
 import BirthDate from "./components/BirthDate/BirthDate";
