@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 const corsOptions = {
-  origin: "https://mockinstagram.vercel.app/", // Allow only this origin
+  origin: "https://shalevmockinstagram.vercel.app/", // Allow only this origin
   credentials: true, // Allow credentials (cookies, Authorization headers, etc.)
   // methods: "GET,POST,PUT,DELETE,OPTIONS", // Allowed HTTP methods
   allowedHeaders: "Content-Type,Authorization", // Allowed headers
