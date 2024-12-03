@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
 const HomePage = () => {
   const [posts, setPosts] = useState([]); // Initialize posts as an empty array
 
   // Fetch posts from API
   const fetchData = async () => {
-    try {
-      const response = await axios.get(`http://85.250.88.33:3006/api/posts`
-        , {
-          headers: {
-            Authorization: 
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGQ5OTNhMDU5MDI3MGU4YmJmM2FiZCIsInVzZXJuYW1lIjoiMTIzIiwiZW1haWwiOiIiLCJpYXQiOjE3MzMxNDE0MzQsImV4cCI6MTczMzE0NTAzNH0._J1sf_sjpPUc-Unr-AZGdgbtTSycxlQG-N-wXVQQlAQ',
-          },
-        }
-      );
+    const token = sessionStorage.getItem("authToken"); // Retrieve token from sessionStorage
 
-      setPosts(response.data);
+    try {
+      const response = await axios.get("http://85.250.88.33:3006/api/posts", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Dynamically use the token
+        },
+      });
+
+      setPosts(response.data); // Update posts state with fetched data
     } catch (error) {
       console.error("Error fetching data:", error);
     }

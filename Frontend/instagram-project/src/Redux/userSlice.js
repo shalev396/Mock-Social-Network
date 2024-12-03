@@ -9,7 +9,6 @@ const initialState = {
   password: "",
 };
 
-
 const userSlice = createSlice({
   name: "user",
   initialState,

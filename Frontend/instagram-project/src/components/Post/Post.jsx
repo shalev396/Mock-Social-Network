@@ -10,13 +10,14 @@ const Post = () => {
   const [post, setPost] = useState(null);
 
   const fetchData = async () => {
+    const token = sessionStorage.getItem("authToken");
     try {
       const response = await axios.get(
         `http://85.250.88.33:3006/api/posts/${postid}`,
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGQ5OTNhMDU5MDI3MGU4YmJmM2FiZCIsInVzZXJuYW1lIjoiMTIzIiwiZW1haWwiOiIiLCJpYXQiOjE3MzMxNDE0MzQsImV4cCI6MTczMzE0NTAzNH0._J1sf_sjpPUc-Unr-AZGdgbtTSycxlQG-N-wXVQQlAQ",
+              `Bearer ${token}`,
           },
         }
       );
