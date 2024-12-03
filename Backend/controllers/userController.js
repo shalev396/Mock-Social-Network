@@ -55,11 +55,11 @@ async function loginUser(req, res) {
       email: user.email,
     };
 
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
 
     res.cookie("jwt", token, {
-      httpOnly: false, // Prevents JavaScript access to the cookie
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      httpOnly: true, // Prevents JavaScript access to the cookie
+      secure: false, // Use HTTPS in production
       sameSite: "strict", // Protects against CSRF
       maxAge: 3600000 * 24, // 1 hour in milliseconds
     });
