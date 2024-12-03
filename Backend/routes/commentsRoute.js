@@ -2,6 +2,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 //import util js file
 import util from "../utils/util.js";
@@ -32,4 +33,5 @@ router.get(
   validator.validateComment.getCommentsByPostIdValidation,
   commentController.getCommentByPostId
 );
+
 export default router;

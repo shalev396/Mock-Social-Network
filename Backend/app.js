@@ -36,6 +36,12 @@ mongoose
 app.use(express.json());
 app.use(morgan("tiny"));
 
+app.use(
+  cors({
+    credentials: true, // Allow credentials (cookies, etc.)
+  })
+);
+
 // Public routes (no authentication required)
 app.use("/api/users", usersRoutes);
 
