@@ -36,11 +36,14 @@ mongoose
 app.use(express.json());
 app.use(morgan("tiny"));
 
-app.use(
-  cors({
-    credentials: true, // Allow credentials (cookies, etc.)
-  })
-);
+const corsOptions = {
+  origin: "https://mockinstagram.vercel.app/", // Allow only this origin
+  credentials: true, // Allow credentials (cookies, Authorization headers, etc.)
+  // methods: "GET,POST,PUT,DELETE,OPTIONS", // Allowed HTTP methods
+  allowedHeaders: "Content-Type,Authorization", // Allowed headers
+  // Allow cookies and other credentials
+};
+app.options("*", cors(corsOptions));
 
 // Public routes (no authentication required)
 app.use("/api/users", usersRoutes);

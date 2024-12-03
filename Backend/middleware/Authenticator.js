@@ -7,6 +7,8 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const authenticate = (req, res, next) => {
   try {
     const cookieHeader = req.headers.cookie;
+    console.log(cookieHeader);
+
     if (!cookieHeader) {
       return res.status(401).json({ message: "Authentication required" });
     }

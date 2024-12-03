@@ -59,8 +59,8 @@ async function loginUser(req, res) {
 
     res.cookie("jwt", token, {
       httpOnly: true, // Prevents JavaScript access to the cookie
-      secure: false, // Use HTTPS in production
-      sameSite: "strict", // Protects against CSRF
+      secure: true, // Use HTTPS in production
+      sameSite: "None", // Protects against CSRF
       maxAge: 3600000 * 24, // 1 hour in milliseconds
     });
     user.password = undefined;
