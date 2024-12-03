@@ -1,27 +1,14 @@
 //imports
 import express from "express";
-import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-
-//import util js file
-import util from "../utils/util.js";
-
-//import middleware
 import validator from "../middleware/validator.js";
-
-//import models
-import User from "../models/user.js";
-
-//import controllers
 import userController from "../controllers/userController.js";
-//configs
-dotenv.config();
+import authenticator from "../middleware/Authenticator.js";
+
 const router = express.Router();
 
-//routes
-//create new user
+// Public routes (no auth required)
 router.post(
-  "/",
+  "/signup",
   validator.validateUser.createUserValidation,
   userController.createUser
 );
@@ -30,16 +17,15 @@ router.post(
   validator.validateUser.loginUserValidation,
   userController.loginUser
 );
-//encryption
-// async function encryption(str) {
-//   try {
-//     const hash = await bcrypt.hash(str + process.env.ENCRYPTION_KEY, 10);
-//     return hash;
-//   } catch (err) {
-//     throw new Error("Error in encryption: " + err.message);
-//   }
-// }
-// async function compareHash(str, hashedPassword) {
-//   return await bcrypt.compare(str + process.env.ENCRYPTION_KEY, hashedPassword);
-// }
+router.post(
+  "/verify",
+  validator.validateUser.verifyUniqueValidation,
+  userController.verifyUnique
+);
+
+// Protected routes (require auth)
+router.use(authenticator); // Apply authenticator middleware to all routes below this line
+// Add protected user routes here
+// For example: profile, settings, etc.
+
 export default router;

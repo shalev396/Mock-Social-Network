@@ -7,18 +7,22 @@ import cors from "cors";
 //import to js files
 import usersRoutes from "./routes/usersRoute.js";
 import postsRoutes from "./routes/postsRoute.js";
+import commentsRoutes from "./routes/commentsRoute.js";
+import authenticator from "./middleware/Authenticator.js";
 
 //import util js file
 import util from "./utils/util.js";
-
-//middleware js
-// import logRequest from "./middleware/logger.js";
 
 //configs
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3006;
-app.use(cors());
+app.use(
+  cors({
+    credentials: true, // Enable credentials (cookies, etc.)
+  })
+);
+
 //mongodb config
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -32,9 +36,18 @@ mongoose
 app.use(express.json());
 app.use(morgan("tiny"));
 
-//routes
+app.use(
+  cors({
+    credentials: true, // Allow credentials (cookies, etc.)
+  })
+);
+
+// Public routes (no authentication required)
 app.use("/api/users", usersRoutes);
-app.use("/api/posts", postsRoutes);
+
+// Protected routes (authentication required)
+app.use("/api/posts", authenticator, postsRoutes);
+app.use("/api/comments", authenticator, commentsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

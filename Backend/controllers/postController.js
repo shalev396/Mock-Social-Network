@@ -2,9 +2,12 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 //import models
 import Post from "../models/post.js";
+import User from "../models/user.js";
+import Comment from "../models/comment.js";
 
 async function createPost(req, res) {
   try {
@@ -25,9 +28,62 @@ async function createPost(req, res) {
 }
 async function getAllPosts(req, res) {
   try {
-    const allPosts = await Post.find();
-    res.status(200).json(allPosts);
+    //populate author details
+    const allPosts = await Post.find()
+      .populate("authorId", "username profilePic")
+      .lean();
+
+    //first c
+    const allComments = await Comment.find()
+      .populate("authorId", "username profilePic")
+      .sort({ createdAt: 1 })
+      .lean();
+
+    console.log("Total comments found:", allComments.length);
+
+    //first c+author
+    const postsWithComments = allPosts.map((post) => {
+      const postIdString = post._id.toString();
+      const commentsForPost = allComments.filter(
+        (c) => c.postId === postIdString
+      );
+      const firstComment = commentsForPost[0];
+
+      console.log(
+        `Post ${postIdString} has ${commentsForPost.length} comments`
+      );
+
+      return {
+        _id: post._id,
+        title: post.title,
+        content: post.content,
+        media: post.media,
+        author: {
+          _id: post.authorId._id,
+          username: post.authorId.username,
+          profilePic: post.authorId.profilePic,
+        },
+        likes: post.likes,
+        commentsCount: commentsForPost.length,
+        createdAt: post.createdAt,
+        firstComment: firstComment
+          ? {
+              _id: firstComment._id,
+              text: firstComment.text,
+              createdAt: firstComment.createdAt,
+              author: {
+                _id: firstComment.authorId._id,
+                username: firstComment.authorId.username,
+                profilePic: firstComment.authorId.profilePic,
+              },
+            }
+          : null,
+      };
+    });
+
+    res.status(200).json(postsWithComments);
   } catch (error) {
+    console.error("Error in getAllPosts:", error);
     res.status(500).json({ message: error.message });
   }
 }
