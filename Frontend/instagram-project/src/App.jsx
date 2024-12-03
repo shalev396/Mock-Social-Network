@@ -14,8 +14,10 @@ import Profile from "./components/Profile/Profile.jsx";
 import AddPage from "./components/AddPage/AddPage.jsx";
 import ReelsPage from "./components/ReelsPage/ReelsPage.jsx";
 
-import HomePage from "./components/homePage/HomePage";
 import Post from "./components/Post/Post";
+
+import HomePage from "./components/homePage/HomePage";
+
 import CommentsPage from "./components/CommentsPage/CommentsPage";
 
 function App() {
