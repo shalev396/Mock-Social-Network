@@ -61,7 +61,7 @@ async function loginUser(req, res) {
       httpOnly: false, // Prevents JavaScript access to the cookie
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
       sameSite: "strict", // Protects against CSRF
-      maxAge: 3600000, // 1 hour in milliseconds
+      maxAge: 3600000 * 24, // 1 hour in milliseconds
     });
     user.password = undefined;
     return res.status(200).json({ message: "Login successful", token, user });
