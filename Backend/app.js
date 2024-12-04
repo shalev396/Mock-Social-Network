@@ -37,13 +37,18 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 const corsOptions = {
-  origin: "https://shalevmockinstagram.vercel.app/", // Allow only this origin
-  credentials: true, // Allow credentials (cookies, Authorization headers, etc.)
+  // origin: "http://localhost:5173", // Allow only this origin
+  // credentials: true, // Allow credentials (cookies, Authorization headers, etc.)
   // methods: "GET,POST,PUT,DELETE,OPTIONS", // Allowed HTTP methods
-  allowedHeaders: "Content-Type,Authorization", // Allowed headers
+  // allowedHeaders: "Content-Type,Authorization", // Allowed headers
   // Allow cookies and other credentials
 };
-app.options("*", cors(corsOptions));
+// app.options("*", cors(corsOptions));
+app.use(
+  cors({
+    credentials: false,
+  })
+);
 
 // Public routes (no authentication required)
 app.use("/api/users", usersRoutes);

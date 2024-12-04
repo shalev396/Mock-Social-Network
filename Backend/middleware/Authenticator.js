@@ -6,20 +6,21 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 const authenticate = (req, res, next) => {
   try {
-    const cookieHeader = req.headers.cookie;
-    console.log(cookieHeader);
+    const token = req.headers.authorization?.split(" ")[1] || req.cookies?.jwt;
+    // const cookieHeader = req.headers.cookie;
+    // console.log(cookieHeader);
 
-    if (!cookieHeader) {
-      return res.status(401).json({ message: "Authentication required" });
-    }
-    // Get the token
-    const cookies = cookieHeader.split(";").reduce((acc, cookie) => {
-      const [key, value] = cookie.trim().split("=");
-      acc[key] = value;
-      return acc;
-    }, {});
+    // if (!cookieHeader) {
+    //   return res.status(401).json({ message: "Authentication required" });
+    // }
+    // // Get the token
+    // const cookies = cookieHeader.split(";").reduce((acc, cookie) => {
+    //   const [key, value] = cookie.trim().split("=");
+    //   acc[key] = value;
+    //   return acc;
+    // }, {});
 
-    const token = cookies.jwt;
+    // const token = cookies.jwt;
 
     if (!token) {
       return res.status(401).json({ message: "Authentication required" });
