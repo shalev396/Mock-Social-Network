@@ -14,13 +14,15 @@ import Profile from "./components/Profile/Profile.jsx";
 import AddPage from "./components/AddPage/AddPage.jsx";
 import ReelsPage from "./components/ReelsPage/ReelsPage.jsx";
 
+import SinglePostPage from "./components/SinglePostPage/SinglePostPage.jsx";
+
+
 
 
 import Post from "./components/Post/Post";
-
 import HomePage from "./components/homePage/HomePage";
-
 import CommentsPage from "./components/CommentsPage/CommentsPage";
+
 
 function App() {
   return (
@@ -38,7 +40,7 @@ function App() {
                 <Route path="/add" element={<AddPage />} />
                 <Route path="/reels" element={<ReelsPage />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/p/:postid" element={<Post />} />
+                <Route path="/p/:postid" element={<SinglePostPage />} />
                 <Route path="/p/:postid/comments" element={<CommentsPage />} />
               </Routes>
             </BrowserRouter>
