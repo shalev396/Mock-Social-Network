@@ -2,26 +2,26 @@ import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
   postId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
     required: true,
   },
   authorId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   text: {
     type: String,
-    require: true,
+    required: true,
   },
   likes: {
     type: Array,
-    require: true,
     default: [],
   },
   createdAt: {
     type: Date,
     default: Date.now,
-    require: true,
   },
 });
 

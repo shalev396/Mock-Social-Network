@@ -36,12 +36,7 @@ const validateUser = {
 };
 //posts
 const createPostValidation = (req, res, next) => {
-  if (
-    !req.body.title ||
-    !req.body.content ||
-    !req.body.media ||
-    !req.body.authorId
-  ) {
+  if (!req.body.content || !req.body.media) {
     return res.status(400).send({
       message: "Missing Filed",
     });
@@ -63,15 +58,23 @@ const getPostByIdValidation = (req, res, next) => {
 
   next();
 };
-
+const LikePostValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
 const validatePost = {
   createPostValidation,
   getallPostValidation,
   getPostByIdValidation,
+  LikePostValidation,
 };
 //comments
 const createCommentValidation = (req, res, next) => {
-  if (!req.body.postId || !req.body.authorId || !req.body.text) {
+  if (!req.body.postId || !req.body.text) {
     return res.status(400).send({
       message: "Missing Filed",
     });

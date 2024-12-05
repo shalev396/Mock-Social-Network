@@ -77,7 +77,7 @@ async function populateDatabase() {
     // Create users
     console.log("Creating users...");
     const createdUsers = await Promise.all(
-      dummyUsers.map((user) => axios.post(`${API_BASE_URL}/users`, user))
+      dummyUsers.map((user) => axios.post(`${API_BASE_URL}/users/signup`, user))
     );
     const userIds = createdUsers.map((response) => response.data._id);
     console.log("Users created successfully");
