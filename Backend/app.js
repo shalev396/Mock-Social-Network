@@ -17,11 +17,6 @@ import util from "./utils/util.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3006;
-app.use(
-  cors({
-    credentials: true, // Enable credentials (cookies, etc.)
-  })
-);
 
 //mongodb config
 mongoose
@@ -36,13 +31,13 @@ mongoose
 app.use(express.json());
 app.use(morgan("tiny"));
 
-const corsOptions = {
-  // origin: "http://localhost:5173", // Allow only this origin
-  // credentials: true, // Allow credentials (cookies, Authorization headers, etc.)
-  // methods: "GET,POST,PUT,DELETE,OPTIONS", // Allowed HTTP methods
-  // allowedHeaders: "Content-Type,Authorization", // Allowed headers
-  // Allow cookies and other credentials
-};
+// const corsOptions = {
+// origin: "http://localhost:5173", // Allow only this origin
+// credentials: true, // Allow credentials (cookies, Authorization headers, etc.)
+// methods: "GET,POST,PUT,DELETE,OPTIONS", // Allowed HTTP methods
+// allowedHeaders: "Content-Type,Authorization", // Allowed headers
+// Allow cookies and other credentials
+// };
 // app.options("*", cors(corsOptions));
 app.use(
   cors({

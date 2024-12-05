@@ -1,13 +1,5 @@
 # Todos
 
-3. add first comment to post in get all posts
-
-4. likes endpoints
-5. TODO NOW modify cerate user route
-
-6. make route for single user detail by id
-7. add jwt to signup
-
 ## 20 Core TODOs (Must Implement)
 
 2. Add JWT token refresh mechanism
