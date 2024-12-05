@@ -18,8 +18,6 @@ async function createPost(req, res) {
       authorId: req.body.authorId,
     });
 
-    // console.log(post);
-
     const newPost = await post.save();
     res.status(201).json(newPost);
   } catch (error) {
@@ -38,9 +36,6 @@ async function getAllPosts(req, res) {
       .populate("authorId", "username profilePic")
       .sort({ createdAt: 1 })
       .lean();
-
-    // console.log("Total comments found:", allComments.length);
-
     //first c+author
     const postsWithComments = allPosts.map((post) => {
       const postIdString = post._id.toString();
@@ -51,10 +46,6 @@ async function getAllPosts(req, res) {
       console.log(commentsForPost);
 
       const firstComment = commentsForPost[0];
-
-      // console.log(
-      //   `Post ${postIdString} has ${commentsForPost.length} comments`
-      // );
 
       return {
         _id: post._id,
@@ -90,7 +81,7 @@ async function getAllPosts(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
-//TODO : add author name and pic
+
 async function getPostById(req, res) {
   try {
     const id = req.params.id;
