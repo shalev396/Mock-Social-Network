@@ -33,5 +33,14 @@ router.get(
   validator.validateUser.getUserByIdValidation,
   userController.getUserById
 );
-
+router.get(
+  "/search/:username",
+  validator.validateUser.getUsersByUsernameValidation,
+  userController.getUsersByUsername
+);
+router.post(
+  "/follow/:id",
+  validator.validateUser.followUserByIdValidation,
+  userController.followUserById
+);
 export default router;
