@@ -11,8 +11,6 @@ import Comment from "../models/comment.js";
 
 async function createPost(req, res) {
   try {
-    console.log(req.user.id);
-
     const post = new Post({
       content: req.body.content,
       media: req.body.media,
@@ -99,7 +97,7 @@ async function getPostById(req, res) {
 async function likePostById(req, res) {
   try {
     const PostId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const result = await Post.find({ _id: PostId });
     const post = result[0];
     console.log(post);

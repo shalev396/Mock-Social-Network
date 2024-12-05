@@ -29,7 +29,9 @@ const authenticate = (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Invalid or expired token" });
       }
+
       req.user = decoded;
+      console.log(req.user);
       next();
     });
   } catch (error) {

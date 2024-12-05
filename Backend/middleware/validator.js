@@ -58,9 +58,8 @@ const getPostByIdValidation = (req, res, next) => {
 
   next();
 };
-//TODO :use jwt instead of body
 const LikePostValidation = (req, res, next) => {
-  if (!req.params.id || !req.body.userId) {
+  if (!req.params.id) {
     return res.status(400).send({
       message: "Missing Filed",
     });
@@ -75,7 +74,7 @@ const validatePost = {
 };
 //comments
 const createCommentValidation = (req, res, next) => {
-  if (!req.body.postId || !req.body.authorId || !req.body.text) {
+  if (!req.body.postId || !req.body.text) {
     return res.status(400).send({
       message: "Missing Filed",
     });
