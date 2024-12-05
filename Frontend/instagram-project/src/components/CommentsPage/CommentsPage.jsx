@@ -63,7 +63,7 @@ const CommentsPage = (PostContent) => {
     ))}
   </div>
 
-  <div className="self-center mb-20">
+  <div className="self-stretch mb-20 bg-black ">
     <CommentForm postId={postid} />
   </div>
 </div>

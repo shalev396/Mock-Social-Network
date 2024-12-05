@@ -15,19 +15,17 @@ import AddPage from "./components/AddPage/AddPage.jsx";
 import ReelsPage from "./components/ReelsPage/ReelsPage.jsx";
 
 import SinglePostPage from "./components/SinglePostPage/SinglePostPage.jsx";
-
-
-
-
-import Post from "./components/Post/Post";
-import HomePage from "./components/homePage/HomePage";
 import CommentsPage from "./components/CommentsPage/CommentsPage";
+import HomePage from "./components/homePage/HomePage";
 
+// Import the AppInitializer
+import AppInitializer from "./Applnitializer.jsx";
 
 function App() {
   return (
     <>
       <Provider store={store}>
+        <AppInitializer /> {/* Ensures user authentication state is initialized */}
         <div className="bg-black w-screen h-screen m-0 p-0 text-white">
           <div>
             <BrowserRouter>

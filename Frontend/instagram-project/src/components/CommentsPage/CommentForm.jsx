@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef ,useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 const CommentForm = ({ postId }) => {
   const [text, setText] = useState('');
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user); // Access user from Redux state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,32 +27,33 @@ const CommentForm = ({ postId }) => {
         },
       });
       console.log('Comment created:', response.data);
-      // Optionally, update the UI or state to reflect the new comment
+      setText(''); // Clear the input field
     } catch (error) {
       console.error('Error creating comment:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center space-x-2">
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Write your comment..."
-        required
-        className="flex-grow bg-gray-200 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        type="submit"
-        className={`px-4 py-2 font-semibold rounded-md ${
-          text ? 'bg-blue-500 text-white' : 'bg-gray-400 text-gray-700'
-        }`}
-        disabled={!text}
-      >
-        Post
-      </button>
-    </form>
-  );
+      <form onSubmit={handleSubmit} className="flex items-center space-x-2 border-t-2 bg-black">
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Write your comment..."
+          required
+          className="flex-grow bg-black text-white p-2 rounded-md"
+        />
+        <button
+          type="submit"
+          className={`px-4 py-2 font-semibold rounded-md ${
+            text ? ' text-blue-500' : ' text-gray-700'
+          }`}
+          disabled={!text}
+        >
+          {text ? 'Post' : ''}
+        </button>
+      </form>
+    );
+    
 };
 
 export default CommentForm;
