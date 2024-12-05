@@ -3,7 +3,9 @@ import axios from 'axios';
 import Post from '../Post/Post';
 
 const HomePage = () => {
+
   const [posts, setPosts] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {

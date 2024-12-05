@@ -57,12 +57,12 @@ async function loginUser(req, res) {
 
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
 
-    res.cookie("jwt", token, {
-      httpOnly: true, // Prevents JavaScript access to the cookie
-      secure: false, // Use HTTPS in production
-      sameSite: "strict", // Protects against CSRF
-      maxAge: 3600000 * 24, // 1 hour in milliseconds
-    });
+    // res.cookie("jwt", token, {
+    //   httpOnly: true, // Prevents JavaScript access to the cookie
+    //   secure: true, // Use HTTPS in production
+    //   sameSite: "None", // Protects against CSRF
+    //   maxAge: 3600000 * 24, // 1 hour in milliseconds
+    // });
     user.password = undefined;
     return res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {

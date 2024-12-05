@@ -12,7 +12,7 @@ async function createComment(req, res) {
   try {
     const comment = new Comment({
       postId: new mongoose.Types.ObjectId(req.body.postId),
-      authorId: new mongoose.Types.ObjectId(req.body.authorId),
+      authorId: new mongoose.Types.ObjectId(req.user.id),
       text: req.body.text,
     });
 

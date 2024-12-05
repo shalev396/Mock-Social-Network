@@ -17,10 +17,11 @@ const LogIn = () => {
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
+
         "http://85.250.88.33:3006/api/users/login",
         { username, password },
         
-    
+   
       );
 
       sessionStorage.setItem("authToken", data.token)
