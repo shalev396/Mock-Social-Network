@@ -85,7 +85,9 @@ async function getAllPosts(req, res) {
 async function getPostById(req, res) {
   try {
     const id = req.params.id;
-    const post = await Post.find({ _id: id });
+    const post = await Post.find({ _id: id })
+      .populate("authorId", "username profilePic")
+      .lean();
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json({ message: error.message });
