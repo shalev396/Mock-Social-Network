@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
 import { HeartIcon as OutlineHeart } from "@heroicons/react/24/outline";
 import { ChatBubbleBottomCenterIcon } from "@heroicons/react/24/outline";
+import TimeAgo from 'react-timeago';
 
-const Body = ({ postId, likes, commentsCount, content }) => {
+
+const Body = ({ postId, likes, commentsCount, content, authorName, postDate }) => {
   const navigate = useNavigate(); // Correct way to programmatically navigate
 
   const handleViewComments = () => {
@@ -12,7 +14,7 @@ const Body = ({ postId, likes, commentsCount, content }) => {
   };
 
   return (
-    <div className="w-full px-2 space-x-6">
+    <div className="w-full px-2 space-x-1">
       {/* Action Section */}
       <div className="flex items-center gap-6">
         {/* Like Button */}
@@ -30,8 +32,8 @@ const Body = ({ postId, likes, commentsCount, content }) => {
       </div>
 
       {/* Post Content */}
-      <div className="mb-4">
-        <p className="text-gray-300">{content}</p>
+      <div className="my-4">
+        <p className="text-gray-300"><strong>{authorName}</strong> {content}</p>
       </div>
 
       {/* View All Comments Button */}
@@ -41,6 +43,7 @@ const Body = ({ postId, likes, commentsCount, content }) => {
       >
         View all {commentsCount} comments
       </button>
+      {/* <span className="text-sm text-gray-500 justify-end"><TimeAgo date={postDate} /></span> */}
     </div>
   );
 };
