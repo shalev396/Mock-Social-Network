@@ -18,7 +18,7 @@ async function createPost(req, res) {
       authorId: req.body.authorId,
     });
 
-    console.log(post);
+    // console.log(post);
 
     const newPost = await post.save();
     res.status(201).json(newPost);
@@ -39,19 +39,22 @@ async function getAllPosts(req, res) {
       .sort({ createdAt: 1 })
       .lean();
 
-    console.log("Total comments found:", allComments.length);
+    // console.log("Total comments found:", allComments.length);
 
     //first c+author
     const postsWithComments = allPosts.map((post) => {
       const postIdString = post._id.toString();
+
       const commentsForPost = allComments.filter(
-        (c) => c.postId === postIdString
+        (comment) => comment.postId.toString() === postIdString
       );
+      console.log(commentsForPost);
+
       const firstComment = commentsForPost[0];
 
-      console.log(
-        `Post ${postIdString} has ${commentsForPost.length} comments`
-      );
+      // console.log(
+      //   `Post ${postIdString} has ${commentsForPost.length} comments`
+      // );
 
       return {
         _id: post._id,
@@ -87,6 +90,7 @@ async function getAllPosts(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+//TODO : add author name and pic
 async function getPostById(req, res) {
   try {
     const id = req.params.id;

@@ -28,7 +28,7 @@ async function createComment(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
-
+//TODO : add author name and pic
 async function getCommentByPostId(req, res) {
   try {
     const id = req.params.id;
