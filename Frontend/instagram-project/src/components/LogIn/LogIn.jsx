@@ -18,11 +18,12 @@ const LogIn = () => {
     try {
       const { data } = await axios.post(
         "http://85.250.88.33:3006/api/users/login",
-        { username, password }
+        { username, password },
+        
+    
       );
 
-      // Save token to sessionStorage
-      sessionStorage.setItem("authToken", data.token);
+      sessionStorage.setItem("authToken", data.token)
 
       // Save user data to Redux
       dispatch(login({ token: data.token, user: data.user }));

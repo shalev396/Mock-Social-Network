@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import Body from "./body";
 import Header from "./Header";
 
@@ -22,6 +22,8 @@ const Post = () => {
         }
       );
       const postData = response.data[0];
+      console.log(response.data);
+      
       setPost(postData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -36,9 +38,15 @@ const Post = () => {
     <div>
       {post ? (
         <>
-          {/* Pass the auth name as the post title for now,  the  media as the profile pic for now */}
-          <Header authorName={post.title}
-          profilePic={post.media}
+        {/* my defult header for  single post  */}
+        <div className="flex items-center justify-between pt-1">
+          <ChevronLeftIcon className="size-9 text-gray-500 flex-none" />
+          <h1 className="text-1.5xl  text-center flex-grow pr-5">Post</h1>
+        </div>
+
+          {/* pass the pfp username and the media of post*/}
+          <Header authorName={post.authorId.username}
+          profilePic={post.authorId.profilePic}
           media= {post.media}
           />
 
