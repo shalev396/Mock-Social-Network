@@ -17,19 +17,14 @@ const LogIn = () => {
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
-        "https://81d5-85-250-88-33.ngrok-free.app/api/users/login",
+
+        "http://85.250.88.33:3006/api/users/login",
         { username, password },
-        {
-          withCredentials: true, // This enables sending and receiving cookies
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:5173",
-          },
-        }
+        
+   
       );
 
-      // Save token to sessionStorage
-      sessionStorage.setItem("authToken", data.token);
+      sessionStorage.setItem("authToken", data.token)
 
       // Save user data to Redux
       dispatch(login({ token: data.token, user: data.user }));
