@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 import Body from "./body";
-import Header from "./Header";
+import Header from "./header";
 
 const Post = () => {
   const { postid } = useParams();
@@ -16,8 +16,7 @@ const Post = () => {
         `http://85.250.88.33:3006/api/posts/${postid}`,
         {
           headers: {
-            Authorization:
-              `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -37,19 +36,19 @@ const Post = () => {
       {post ? (
         <>
           {/* Pass the auth name as the post title for now,  the  media as the profile pic for now */}
-          <Header authorName={post.title}
-          profilePic={post.media}
-          media= {post.media}
+          <Header
+            authorName={post.title}
+            profilePic={post.media}
+            media={post.media}
           />
 
           {/* body part */}
-          <Body 
-          commentsCount={post.commentsCount}
-          likes= {post.likes.length}
-          content={post.content}
-          postId= {post._id}
+          <Body
+            commentsCount={post.commentsCount}
+            likes={post.likes.length}
+            content={post.content}
+            postId={post._id}
           />
-
         </>
       ) : (
         "Loading..."

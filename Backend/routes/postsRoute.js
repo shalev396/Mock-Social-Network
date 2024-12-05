@@ -37,4 +37,9 @@ router.get(
   validator.validatePost.getPostByIdValidation,
   postController.getPostById
 );
+router.post(
+  "/like/:id",
+  validator.validatePost.LikePostValidation,
+  postController.likePostById
+);
 export default router;

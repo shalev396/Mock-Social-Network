@@ -9,11 +9,13 @@ const HomePage = () => {
     const token = sessionStorage.getItem("authToken"); // Retrieve token from sessionStorage
 
     try {
-      const response = await axios.get("http://85.250.88.33:3006/api/posts", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Dynamically use the token
-        },
-      });
+      const response = await axios.get(
+        "https://81d5-85-250-88-33.ngrok-free.app/api/posts",
+        {
+          withCredentials: true, // Include cookies in the request
+        }
+      );
+      console.log(response.data);
 
       setPosts(response.data); // Update posts state with fetched data
     } catch (error) {
