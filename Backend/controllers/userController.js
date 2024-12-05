@@ -107,7 +107,37 @@ async function verifyUnique(req, res) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+async function getSelf(req, res) {
+  try {
+    const uid = req.user.id;
+    const user = await User.findOne({ _id: uid });
+    const sendUser = user.toObject();
+    delete sendUser.password;
+    return res.status(200).json(sendUser);
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+//fix
+async function getUserById(req, res) {
+  try {
+    const uid = req.params.id;
+    const user = await User.findOne({ _id: uid });
+    const sendUser = user.toObject();
 
+    delete sendUser.password;
+    delete sendUser.password;
+    delete sendUser.email;
+    delete sendUser.phoneNumber;
+    delete sendUser.birthday;
+
+    return res.status(200).json(sendUser);
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
 // // encryption
 // async function encryption(str) {
 //   try {
@@ -124,5 +154,7 @@ const userController = {
   createUser,
   loginUser,
   verifyUnique,
+  getSelf,
+  getUserById,
 };
 export default userController;

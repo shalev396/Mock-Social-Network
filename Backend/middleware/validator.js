@@ -29,10 +29,19 @@ const verifyUniqueValidation = (req, res, next) => {
   }
   next();
 };
+const getUserByIdValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
 const validateUser = {
   createUserValidation,
   loginUserValidation,
   verifyUniqueValidation,
+  getUserByIdValidation,
 };
 //posts
 const createPostValidation = (req, res, next) => {

@@ -27,5 +27,11 @@ router.post(
 router.use(authenticator); // Apply authenticator middleware to all routes below this line
 // Add protected user routes here
 // For example: profile, settings, etc.
+router.get("/self", userController.getSelf);
+router.get(
+  "/:id",
+  validator.validateUser.getUserByIdValidation,
+  userController.getUserById
+);
 
 export default router;
