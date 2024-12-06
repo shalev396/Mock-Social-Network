@@ -102,9 +102,18 @@ const getCommentsByPostIdValidation = (req, res, next) => {
 
   next();
 };
+const LikeCommentValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
 const validateComment = {
   createCommentValidation,
   getCommentsByPostIdValidation,
+  LikeCommentValidation,
 };
 //object constructing
 const validator = {
