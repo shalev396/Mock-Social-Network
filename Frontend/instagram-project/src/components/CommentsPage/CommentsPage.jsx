@@ -1,51 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import axios from "axios";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CommentForm from "./CommentForm";
-import { ClipLoader } from "react-spinners"; // Import the spinner component
-
+import { ClipLoader } from "react-spinners"; // Loading spinner
 
 const CommentsPage = () => {
   const navigate = useNavigate();
-  const { postid } = useParams();
+  const { postid } = useParams(); // Fetch post ID from route
   const token = useSelector((state) => state.auth.token); // Access token from Redux
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!token) {
-        console.error("No token available. Redirecting to login...");
-        navigate("/", { replace: true });
-        return;
-      }
-
-      try {
-        const response = await axios.get(
-          `http://85.250.88.33:3006/api/comments/post/${postid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setComments(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error.response && error.response.status === 401) {
-          console.error("Token is invalid. Redirecting to login...");
-          navigate("/", { replace: true });
+  // Fetch comments from the API
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(
+        `http://85.250.88.33:3006/api/comments/post/${postid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      } finally {
-        setLoading(false);
+      );
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      if (error.response && error.response.status === 401) {
+        navigate("/", { replace: true });
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
+  // Fetch comments on mount and when postid changes
+  useEffect(() => {
+    if (postid && token) {
+      fetchComments();
+    } else {
+      console.error("Missing post ID or token. Redirecting to login...");
+      navigate("/", { replace: true });
+    }
   }, [postid, token, navigate]);
+
+  // Update comments by re-fetching after a new comment is added
+  const handleNewComment = () => {
+    fetchComments();
+  };
 
   if (loading) {
     return (
@@ -65,24 +68,29 @@ const CommentsPage = () => {
       </div>
 
       <div className="flex-grow overflow-y-auto">
-        {comments.map((comment) => (
-          <div className="pt-1 pl-2 mb-6 flex gap-4" key={comment.id}>
-            <img
-              src={comment.author.profilePic}
-              alt="author profile picture"
-              className="rounded-full size-9"
-            />
-            <div className="flex flex-col">
-              <p>
-                <strong>{comment.author.username}</strong> {comment.text}
-              </p>
+        {comments.length > 0 ? (
+          comments.map((comment, index) => (
+            <div className="pt-1 pl-2 mb-6 flex gap-4" key={comment.id || index}>
+              <img
+                src={comment.author?.profilePic || ""}
+                alt="author profile picture"
+                className="rounded-full size-9"
+              />
+              <div className="flex flex-col">
+                <p>
+                  <strong>{comment.author?.username || "Unknown"}</strong>{" "}
+                  {comment.text}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="text-white text-center">No comments yet.</div>
+        )}
       </div>
 
       <div className="self-stretch mb-20 bg-black">
-        <CommentForm postId={postid} />
+        <CommentForm postId={postid} onNewComment={handleNewComment} />
       </div>
     </div>
   );

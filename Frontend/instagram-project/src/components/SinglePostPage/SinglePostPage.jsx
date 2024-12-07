@@ -11,9 +11,16 @@ const SinglePostPage = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate(); // For navigation to the Not Found page
 
+  const token = useSelector((state) => state.auth.token); // Access token from Redux state
+
   useEffect(() => {
     const fetchData = async () => {
-    const token = useSelector()
+      if (!token) {
+        console.error("No token available. Redirecting to login...");
+        navigate("/", { replace: true }); // Redirect to login if no token
+        return;
+      }
+
       try {
         const response = await axios.get(
           `http://85.250.88.33:3006/api/posts/${postid}`,
@@ -42,7 +49,7 @@ const SinglePostPage = () => {
     };
 
     fetchData();
-  }, [postid, navigate]);
+  }, [postid, token, navigate]);
 
   if (loading) {
     return (
