@@ -1,8 +1,13 @@
 import React from "react";
 import BottomNav from "../Nav/BottomNav";
 
+import { useSelector } from "react-redux";
+
 import img from "../../assets/images/IMG_5310.jpg";
 const Profile = () => {
+  const user = useSelector((state) => state.auth.user);
+  const token = sessionStorage.getItem("authToken");
+
   return (
     <div>
       <div>

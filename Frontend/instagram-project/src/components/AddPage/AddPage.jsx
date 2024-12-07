@@ -13,7 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
 
-const AddPage = () => {
+const AddPage = ({ open, onClose }) => {
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [imageContent, setImageContent] = useState("");
@@ -69,17 +69,19 @@ const AddPage = () => {
     }
   };
 
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleClickOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
   return (
     <Box>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open dialog
-      </Button>
+      </Button> */}
       <BootstrapDialog
+        open={open}
+        onClose={onClose}
         sx={{
           maxWidth: "100%",
           borderRadius: "10px",
@@ -93,9 +95,9 @@ const AddPage = () => {
             overflow: "hidden",
           },
         }}
-        onClose={handleClose}
+        // onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        // open={open}
       >
         <DialogTitle
           sx={{
@@ -114,7 +116,8 @@ const AddPage = () => {
         </DialogTitle>
         <IconButton
           aria-label="close"
-          onClick={handleClose}
+          // onClick={handleClose}
+          onClick={onClose}
           sx={{
             position: "absolute",
             right: 8,
@@ -252,7 +255,8 @@ const AddPage = () => {
               onClick={() => {
                 sharePost(uploadedImageUrl, imageContent);
                 handleClose();
-                // window.location.reload();
+                window.location.reload();
+                // onClose()
               }}
               sx={{
                 textTransform: "none",
@@ -272,7 +276,7 @@ const AddPage = () => {
         </DialogActions>
       </BootstrapDialog>
 
-      <BottomNav index={2} />
+      {/* <BottomNav index={2} onAddClick={onClose} /> */}
     </Box>
   );
 };

@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Post from '../Post/Post';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Post from "../Post/Post";
+import BottomNav from "../Nav/BottomNav";
 
 const HomePage = () => {
-
   const [posts, setPosts] = useState([]);
-
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = sessionStorage.getItem('authToken');
+      const token = sessionStorage.getItem("authToken");
       try {
-        const response = await axios.get('http://85.250.88.33:3006/api/posts', {
+        const response = await axios.get("http://85.250.88.33:3006/api/posts", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setPosts(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -30,6 +29,7 @@ const HomePage = () => {
       {posts.map((post) => (
         <Post key={post._id} post={post} showBackButton={false} />
       ))}
+      <BottomNav index={2} />
     </div>
   );
 };

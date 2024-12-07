@@ -12,15 +12,25 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import MovieIcon from "@mui/icons-material/Movie";
 
-function BottomNav({ index }) {
+function BottomNav({ index, onAddClick }) {
+  console.log("Received onAddClick:", onAddClick); // Debugging line
+
   const navigate = useNavigate();
-  const [value, setValue] = React.useState(index);
+  const [value, setValue] = React.useState(index || 0);
 
   const handleNavigation = (event, newValue) => {
     setValue(newValue);
+
     if (newValue === 0) navigate("/homepage");
     if (newValue === 1) navigate("/explore");
-    if (newValue === 2) navigate("/add");
+    if (newValue === 2) {
+      if (onAddClick) {
+        console.log("Calling onAddClick...");
+        onAddClick(); // Call the function
+      } else {
+        console.warn("onAddClick is undefined!");
+      }
+    }
     if (newValue === 3) navigate("/reels");
     if (newValue === 4) navigate("/profile");
   };
@@ -53,9 +63,10 @@ function BottomNav({ index }) {
         sx={{ color: "white" }}
       />
       <BottomNavigationAction
+        disabled
         label="Reels"
         icon={<MovieIcon />}
-        sx={{ color: "white" }}
+        sx={{ color: "grey" }}
       />
       <BottomNavigationAction
         label="Profile"

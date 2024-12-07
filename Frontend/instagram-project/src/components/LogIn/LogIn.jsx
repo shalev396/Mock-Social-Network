@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../Redux/authSlice"; // Redux action to save user data
+import { login } from "../../Redux/authSlice";
 import instImg from "../../assets/images/instagram-white (1).svg";
 import { Link } from "react-router-dom";
 
@@ -17,27 +17,21 @@ const LogIn = () => {
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
-
         "http://85.250.88.33:3006/api/users/login",
-        { username, password },
-        
-   
+        { username, password }
       );
+      sessionStorage.setItem("authToken", data.token);
 
-      sessionStorage.setItem("authToken", data.token)
-
-      // Save user data to Redux
       dispatch(login({ token: data.token, user: data.user }));
-
       console.log("Login successful:", data);
 
-      // Navigate to homepage
       navigate("/homepage");
     } catch (error) {
       setWrongPassword(true);
       console.error("Login failed:", error);
     }
   };
+  const isValidLogIn = username.trim() && password.trim();
 
   const inputCss =
     "bg-[rgb(18,18,18)] border border-slate-300 rounded-sm  px-[8px] pt-[9px] pb-[7px] m-1 text-xs";
@@ -69,11 +63,15 @@ const LogIn = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button
+            disabled={!isValidLogIn}
             onClick={() => tryLogIn(username, password)}
-            className="bg-[#0095f6] font-bold text-sm border-0 rounded-md mt-4 text-white py-2"
+            className={`font-bold text-sm border-0 rounded-md mt-4 text-white py-2 w-[248px]  ${
+              isValidLogIn ? "bg-[#0095f6]" : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
             Log In
           </button>
+
           {wrongPassword && (
             <p className="text-red-500 m-4">
               Sorry, one or more of your details are incorrect. Please try again
