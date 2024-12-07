@@ -17,20 +17,19 @@ const LogIn = () => {
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
-
         "http://85.250.88.33:3006/api/users/login",
-        { username, password },
-        
-   
+        { username, password }
       );
-
-      sessionStorage.setItem("authToken", data.token)
-
+  
+      // Store token and user in sessionStorage
+      sessionStorage.setItem("authToken", data.token);
+      sessionStorage.setItem("user", JSON.stringify(data.user)); // Convert user object to JSON string
+  
       // Save user data to Redux
       dispatch(login({ token: data.token, user: data.user }));
-
+  
       console.log("Login successful:", data);
-
+  
       // Navigate to homepage
       navigate("/homepage");
     } catch (error) {
@@ -38,6 +37,7 @@ const LogIn = () => {
       console.error("Login failed:", error);
     }
   };
+  
 
   const inputCss =
     "bg-[rgb(18,18,18)] border border-slate-300 rounded-sm  px-[8px] pt-[9px] pb-[7px] m-1 text-xs";
