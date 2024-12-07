@@ -23,9 +23,6 @@ import { ClipLoader } from "react-spinners"; // Loading spinner
 function App() {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    console.log("App: Mounting AppInitializer...");
-  }, []);
 
   return (
     <Provider store={store}>

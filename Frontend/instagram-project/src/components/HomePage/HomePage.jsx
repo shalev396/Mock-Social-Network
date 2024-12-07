@@ -16,7 +16,7 @@ const HomePage = () => {
       }
 
       try {
-        const response = await axios.get("http://85.250.88.33:3006/api/posts", {
+        const response = await axios.get("http://85.250.95.96:3006/api/posts", {
           headers: {
             Authorization: `Bearer ${token}`, // Include token in headers
           },

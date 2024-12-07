@@ -17,13 +17,13 @@ const LogIn = () => {
   const tryLogIn = async (username, password) => {
     try {
       const { data } = await axios.post(
-        "http://85.250.88.33:3006/api/users/login",
+        "http://85.250.95.96:3006/api/users/login",
         { username, password }
       );
   
       // Store token and user in sessionStorage
       sessionStorage.setItem("authToken", data.token);
-      sessionStorage.setItem("user", JSON.stringify(data.user)); // Convert user object to JSON string
+      // sessionStorage.setItem("user", JSON.stringify(data.user)); // Convert user object to JSON string
   
       // Save user data to Redux
       dispatch(login({ token: data.token, user: data.user }));

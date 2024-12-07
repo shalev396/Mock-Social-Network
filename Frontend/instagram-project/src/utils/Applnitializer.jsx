@@ -10,13 +10,18 @@ const AppInitializer = ({ setLoading }) => {
     const initializeAuth = async () => {
       console.log("AppInitializer: Starting initialization...");
       const token = sessionStorage.getItem("authToken");
-      const userData = sessionStorage.getItem("user");
+      //todo
+      // const userData = sessionStorage.getItem("user");
 
       console.log("AppInitializer: Retrieved token:", token);
-      console.log("AppInitializer: Retrieved user:", userData);
+      // console.log("AppInitializer: Retrieved user:", userData);
 
-      if (!token || !userData) {
+      if (!token
+        //  || !userData
+        ) {
         console.error("AppInitializer: No token or user found. Logging out...");
+        sessionStorage.removeItem("authToken");
+        sessionStorage.removeItem("user");
         dispatch(logout()); // Clear Redux state
         setLoading(false); // Stop loading
         return;
@@ -24,7 +29,7 @@ const AppInitializer = ({ setLoading }) => {
 
       try {
         console.log("AppInitializer: Validating token...");
-        const response = await axios.get("http://85.250.88.33:3006/api/users/self", {
+        const response = await axios.get("http://85.250.95.96:3006/api/users/self", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

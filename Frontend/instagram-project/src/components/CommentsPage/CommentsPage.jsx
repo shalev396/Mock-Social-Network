@@ -17,7 +17,7 @@ const CommentsPage = () => {
   const fetchComments = async () => {
     try {
       const response = await axios.get(
-        `http://85.250.88.33:3006/api/comments/post/${postid}`,
+        `http://85.250.95.96:3006/api/comments/post/${postid}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

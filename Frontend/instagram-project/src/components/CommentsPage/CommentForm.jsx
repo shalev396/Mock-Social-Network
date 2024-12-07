@@ -23,7 +23,7 @@ const CommentForm = ({ postId, onNewComment }) => {
 
     try {
       const response = await axios.post(
-        "http://85.250.88.33:3006/api/comments",
+        "http://85.250.95.96:3006/api/comments",
         newComment,
         {
           headers: {

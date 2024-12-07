@@ -23,7 +23,7 @@ const SinglePostPage = () => {
 
       try {
         const response = await axios.get(
-          `http://85.250.88.33:3006/api/posts/${postid}`,
+          `http://85.250.95.96:3006/api/posts/${postid}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
