@@ -17,8 +17,8 @@ const AppInitializer = ({ setLoading }) => {
 
       if (!token || !userData) {
         console.error("AppInitializer: No token or user found. Logging out...");
-        dispatch(logout());
-        setLoading(false); // Ensure loading ends
+        dispatch(logout()); // Clear Redux state
+        setLoading(false); // Stop loading
         return;
       }
 
@@ -29,15 +29,15 @@ const AppInitializer = ({ setLoading }) => {
         });
 
         console.log("AppInitializer: Token validation successful. User:", response.data);
-        dispatch(login({ token, user: response.data })); // Update Redux with valid user data
+        dispatch(login({ token, user: response.data })); // Set Redux state
       } catch (error) {
         console.error("AppInitializer: Token validation failed:", error);
-        sessionStorage.removeItem("authToken"); // Clear invalid token
-        sessionStorage.removeItem("user"); // Clear invalid user data
-        dispatch(logout()); // Reset Redux state
+        sessionStorage.removeItem("authToken");
+        sessionStorage.removeItem("user");
+        dispatch(logout()); // Clear Redux state
       } finally {
         console.log("AppInitializer: Initialization complete.");
-        setLoading(false); // Stop loading no matter what
+        setLoading(false); // Stop loading
       }
     };
 

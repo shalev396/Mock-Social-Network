@@ -28,7 +28,7 @@ const CommentsPage = () => {
     } catch (error) {
       console.error("Error fetching comments:", error);
       if (error.response && error.response.status === 401) {
-        navigate("/", { replace: true });
+        navigate("/not-found", { replace: true });
       }
     } finally {
       setLoading(false);
