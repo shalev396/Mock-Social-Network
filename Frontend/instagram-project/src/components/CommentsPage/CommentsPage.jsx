@@ -4,12 +4,15 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CommentForm from "./CommentForm";
+import CommentLike from "./CommentLike";
 import { ClipLoader } from "react-spinners"; // Loading spinner
 
 const CommentsPage = () => {
   const navigate = useNavigate();
   const { postid } = useParams(); // Fetch post ID from route
   const token = useSelector((state) => state.auth.token); // Access token from Redux
+  const user = useSelector((state) => state.auth.user); // Access user from Redux state
+
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -58,6 +61,7 @@ const CommentsPage = () => {
     );
   }
 
+
   return (
     <div className="w-full flex flex-col h-screen">
       <div className="flex items-center border-b p-2 mb-4">
@@ -69,8 +73,8 @@ const CommentsPage = () => {
 
       <div className="flex-grow overflow-y-auto">
         {comments.length > 0 ? (
-          comments.map((comment, index) => (
-            <div className="pt-1 pl-2 mb-6 flex gap-4" key={comment.id || index}>
+          comments.map((comment) => (
+            <div className="pt-1 pl-2 mb-6 flex gap-4" key={comment.id}>
               <img
                 src={comment.author?.profilePic || ""}
                 alt="author profile picture"
@@ -78,9 +82,14 @@ const CommentsPage = () => {
               />
               <div className="flex flex-col">
                 <p>
-                  <strong>{comment.author?.username || "Unknown"}</strong>{" "}
-                  {comment.text}
+                  <strong>{comment.author?.username || "Unknown"}</strong> {comment.text}
                 </p>
+                
+                <CommentLike
+                  commentId={comment.id}
+                  initialLikes={comment.likes.length}
+                  isLiked={comment.likes.includes(user._id)} // Check if the user liked the comment
+                />
               </div>
             </div>
           ))

@@ -1,21 +1,67 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import React from "react";
+// import { Navigate, Outlet } from "react-router-dom";
+// import { useSelector } from "react-redux";
 
-const ProtectedRoute = ({ children }) => {
-  // console.log("ProtectedRoute: Rendering..."); // Add this log
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+// const ProtectedRoute = () => {
+//   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated); // Check authentication status
 
-  // console.log("ProtectedRoute: isAuthenticated:", isAuthenticated);
+//   if (!isAuthenticated) {
+//     console.error("ProtectedRoute: User is not authenticated. Redirecting to login...");
+//     return <Navigate to="/" replace />;
+//   }
 
-  if (!isAuthenticated) {
-    console.error(
-      "ProtectedRoute: User is not authenticated. Redirecting to login..."
+//   return <Outlet />; // Render the nested routes if authenticated
+// };
+
+// export default ProtectedRoute;
+
+import React, { useEffect, useState } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { logout } from "../Redux/authSlice";
+
+const ProtectedRoute = () => {
+  const token = useSelector((state) => state.auth.token); // Get token from Redux
+  const [isAuthenticated, setIsAuthenticated] = useState(null); // Authentication state
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const validateToken = async () => {
+      if (!token) {
+        setIsAuthenticated(false); // No token means unauthenticated
+        return;
+      }
+
+      try {
+        // Validate the token
+        await axios.get("http://85.250.95.96:3006/api/users/self", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsAuthenticated(true); // Token is valid
+      } catch (error) {
+        console.error(
+          "ProtectedRoute: Token validation failed. Logging out...",
+          error
+        );
+        dispatch(logout()); // Clear Redux state
+        setIsAuthenticated(false); // Mark as unauthenticated
+      }
+    };
+
+    validateToken();
+  }, [token, dispatch]);
+
+  if (isAuthenticated === null) {
+    // Show a loading state while validating the token
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white">
+        Validating authentication...
+      </div>
     );
-    return <Navigate to="/" replace />;
   }
 
-  return children;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
 };
 
 export default ProtectedRoute;
