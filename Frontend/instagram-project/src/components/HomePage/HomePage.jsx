@@ -6,6 +6,7 @@ import BottomNav from "../Nav/BottomNav";
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
+
   const token = useSelector((state) => state.auth.token); // Access token from Redux
 
   useEffect(() => {
@@ -14,7 +15,6 @@ const HomePage = () => {
         console.error("No token available.");
         return;
       }
-
       try {
         const response = await axios.get("http://85.250.95.96:3006/api/posts", {
           headers: {
@@ -23,7 +23,9 @@ const HomePage = () => {
         });
         setPosts(response.data);
       } catch (error) {
+
         console.error("Error fetching posts:", error);
+
       }
     };
 
@@ -47,6 +49,7 @@ const HomePage = () => {
       {posts.map((post) => (
         <Post key={post._id} post={post} showBackButton={false} />
       ))}
+      <BottomNav index={0} />
     </div>
   );
 };

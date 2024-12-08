@@ -91,7 +91,7 @@ async function getPostById(req, res) {
     delete post[0].authorId;
     res.status(200).json(post);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(404).json({ message: error.message });
   }
 }
 async function likePostById(req, res) {
@@ -100,6 +100,8 @@ async function likePostById(req, res) {
     const userId = req.user.id;
     const result = await Post.find({ _id: PostId });
     const post = result[0];
+    console.log(userId);
+
     console.log(post);
 
     if (!post.likes.includes(userId)) {
@@ -115,10 +117,25 @@ async function likePostById(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+
+async function getPostByUserId(req, res) {
+  try {
+    const id = req.params.id;
+    const posts = await Post.find({ authorId: id })
+      .populate("authorId", "username profilePic")
+      .lean();
+    console.log(posts);
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
+
 const postController = {
   createPost,
   getAllPosts,
   getPostById,
   likePostById,
+  getPostByUserId,
 };
 export default postController;

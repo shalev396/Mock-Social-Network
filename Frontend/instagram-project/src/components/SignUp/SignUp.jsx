@@ -17,20 +17,6 @@ const SignUp = () => {
   const [newPassword, setNewPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPhNumber, setNewPhNumber] = useState("");
-  const [emailOrPhone, setEmailOrPhone] = useState("");
-
-  const handleEmailOfPhone = (e) => {
-    e.preventDefault();
-    const value = e.target.value;
-    setEmailOrPhone(value);
-    if (value.includes("@")) {
-      setNewEmail(value);
-      setNewPhNumber("");
-    } else {
-      setNewPhNumber(value);
-      setNewEmail("");
-    }
-  };
 
   const dispatch = useDispatch();
 
@@ -40,6 +26,11 @@ const SignUp = () => {
     dispatch(setUsername(newUsername));
     dispatch(setPassword(newPassword));
   };
+  const isFormValid =
+    newPhNumber.trim().length >= 10 &&
+    newEmail.trim().includes("@") &&
+    newPassword.trim() &&
+    newUsername.trim();
 
   const inputCss =
     "bg-[rgb(18,18,18)] border border-slate-300 rounded-sm  px-[8px] pt-[9px] pb-[7px] m-1 text-xs";
@@ -62,9 +53,16 @@ const SignUp = () => {
           <input
             className={inputCss}
             type="text"
-            placeholder="Mobile Number or Email"
-            value={emailOrPhone}
-            onChange={handleEmailOfPhone}
+            placeholder="Mobile Number"
+            value={newPhNumber}
+            onChange={(e) => setNewPhNumber(e.target.value)}
+          ></input>
+          <input
+            className={inputCss}
+            type="text"
+            placeholder="Email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
           ></input>
           <input
             className={inputCss}
@@ -124,8 +122,11 @@ const SignUp = () => {
 
           <Link to="/birthdate">
             <button
+              disabled={!isFormValid}
               onClick={handleSubmit}
-              className="bg-[#0095f6] font-bold text-sm border-0 rounded-md mt-4 text-white py-2 w-[248px]"
+              className={`font-bold text-sm border-0 rounded-md mt-4 text-white py-2 w-[248px]  ${
+                isFormValid ? "bg-[#0095f6]" : "bg-gray-400 cursor-not-allowed"
+              }`}
             >
               Sign Up
             </button>
