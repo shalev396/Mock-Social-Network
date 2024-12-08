@@ -2,7 +2,7 @@
 
 ## Base URL
 
-http://85.250.87.24:3006
+http://85.250.95.96:3006
 
 ## Authentication
 
