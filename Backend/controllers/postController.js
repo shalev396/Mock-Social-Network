@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import Post from "../models/post.js";
 import User from "../models/user.js";
 import Comment from "../models/comment.js";
+import post from "../models/post.js";
 
 async function createPost(req, res) {
   try {
@@ -42,8 +43,6 @@ async function getAllPosts(req, res) {
       const commentsForPost = allComments.filter(
         (comment) => comment.postId.toString() === postIdString
       );
-      // console.log(commentsForPost);
-
       const firstComment = commentsForPost[0];
 
       return {
@@ -86,7 +85,6 @@ async function getPostById(req, res) {
     const post = await Post.find({ _id: id })
       .populate("authorId", "username profilePic")
       .lean();
-    console.log(post);
     post[0].author = post[0].authorId;
     delete post[0].authorId;
     res.status(200).json(post);
@@ -100,16 +98,12 @@ async function likePostById(req, res) {
     const userId = req.user.id;
     const result = await Post.find({ _id: PostId });
     const post = result[0];
-    console.log(userId);
-
-    console.log(post);
 
     if (!post.likes.includes(userId)) {
       post.likes.push(userId);
     } else {
       post.likes.splice(post.likes.indexOf(userId), 1);
     }
-    console.log(post);
     await Post.findOneAndReplace({ _id: post.id }, post);
 
     res.status(200).json(post);
@@ -124,18 +118,39 @@ async function getPostByUserId(req, res) {
     const posts = await Post.find({ authorId: id })
       .populate("authorId", "username profilePic")
       .lean();
-    console.log(posts);
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 }
+async function getFollowerPost(req, res) {
+  try {
+    const posts = [];
+    const userId = req.user.id;
+    const fullUser = await User.findOne({ _id: userId });
+    console.log(fullUser.following);
 
+    for (const followed of fullUser.following) {
+      const post = await Post.find({ authorId: followed })
+        .populate("authorId", "username profilePic")
+        .lean();
+      console.log(post);
+      posts.push(...post);
+    }
+    console.log(posts);
+
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
 const postController = {
   createPost,
   getAllPosts,
   getPostById,
   likePostById,
   getPostByUserId,
+  getFollowerPost,
 };
 export default postController;

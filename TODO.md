@@ -31,6 +31,7 @@
 11. **extra/**data encryption
     <!-- 24. add get post by userid -->
     <!-- 25. add find user by username (img and name and id) -->
+12. get follower posts by uid
 
 ##TODOS frontend
 1.make reels button unclickable

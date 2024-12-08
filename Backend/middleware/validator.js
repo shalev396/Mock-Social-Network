@@ -72,11 +72,6 @@ const createPostValidation = (req, res, next) => {
   next();
 };
 
-const getallPostValidation = (req, res, next) => {
-  //TODO: verify only our website can get and add uid to url for customized content
-
-  next();
-};
 const getPostByIdValidation = (req, res, next) => {
   if (!req.params.id) {
     return res.status(400).send({
@@ -102,12 +97,24 @@ const getPostByUserIdValidation = (req, res, next) => {
   }
   next();
 };
+const getallPostValidation = (req, res, next) => {
+  //TODO: verify only our website can get and add uid to url for customized content
+
+  next();
+};
+const getFollowerPostValidation = (req, res, next) => {
+  //TODO: verify only our website can get and add uid to url for customized content
+  console.log("follow");
+
+  next();
+};
 const validatePost = {
   createPostValidation,
   getallPostValidation,
   getPostByIdValidation,
   LikePostValidation,
   getPostByUserIdValidation,
+  getFollowerPostValidation,
 };
 //comments
 const createCommentValidation = (req, res, next) => {

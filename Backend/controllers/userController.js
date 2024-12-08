@@ -182,7 +182,7 @@ async function followUserById(req, res) {
     await User.findOneAndReplace({ _id: followedUser.id }, followedUser);
     const checks = { me: user, him: followedUser };
     // res.status(200).json(checks);
-    res.status(200).json({ message: "followed" });
+    res.status(200).json(checks);
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
