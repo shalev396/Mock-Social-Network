@@ -63,13 +63,35 @@ async function getCommentByPostId(req, res) {
     res.status(200).json(formattedComments);
   } catch (error) {
     if (error.name === "CastError") {
-      return res.status(400).json({ message: "Invalid post ID format" });
+      return res.status(404).json({ message: "Invalid post ID format" });
     }
+    res.status(500).json({ message: error.message });
+  }
+}
+async function likeCommentById(req, res) {
+  try {
+    const CommentId = req.params.id;
+    const userId = req.user.id;
+    const result = await Comment.find({ _id: CommentId });
+    const comment = result[0];
+    console.log(comment);
+
+    if (!comment.likes.includes(userId)) {
+      comment.likes.push(userId);
+    } else {
+      comment.likes.splice(comment.likes.indexOf(userId), 1);
+    }
+    console.log(comment);
+    await Comment.findOneAndReplace({ _id: comment.id }, comment);
+
+    res.status(200).json(comment);
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 }
 const commentsController = {
   createComment,
   getCommentByPostId,
+  likeCommentById,
 };
 export default commentsController;

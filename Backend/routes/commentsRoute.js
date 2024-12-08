@@ -33,5 +33,9 @@ router.get(
   validator.validateComment.getCommentsByPostIdValidation,
   commentController.getCommentByPostId
 );
-
+router.post(
+  "/like/:id",
+  validator.validateComment.LikeCommentValidation,
+  commentController.likeCommentById
+);
 export default router;

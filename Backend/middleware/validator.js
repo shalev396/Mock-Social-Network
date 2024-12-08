@@ -29,10 +29,38 @@ const verifyUniqueValidation = (req, res, next) => {
   }
   next();
 };
+const getUserByIdValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
+const getUsersByUsernameValidation = (req, res, next) => {
+  if (!req.params.username) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
+const followUserByIdValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
+
 const validateUser = {
   createUserValidation,
   loginUserValidation,
   verifyUniqueValidation,
+  getUserByIdValidation,
+  getUsersByUsernameValidation,
+  followUserByIdValidation,
 };
 //posts
 const createPostValidation = (req, res, next) => {
@@ -66,11 +94,20 @@ const LikePostValidation = (req, res, next) => {
   }
   next();
 };
+const getPostByUserIdValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
 const validatePost = {
   createPostValidation,
   getallPostValidation,
   getPostByIdValidation,
   LikePostValidation,
+  getPostByUserIdValidation,
 };
 //comments
 const createCommentValidation = (req, res, next) => {
@@ -93,9 +130,18 @@ const getCommentsByPostIdValidation = (req, res, next) => {
 
   next();
 };
+const LikeCommentValidation = (req, res, next) => {
+  if (!req.params.id) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
 const validateComment = {
   createCommentValidation,
   getCommentsByPostIdValidation,
+  LikeCommentValidation,
 };
 //object constructing
 const validator = {

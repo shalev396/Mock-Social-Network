@@ -107,22 +107,94 @@ async function verifyUnique(req, res) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+async function getSelf(req, res) {
+  try {
+    const uid = req.user.id;
+    const user = await User.findOne({ _id: uid });
+    const sendUser = user.toObject();
+    delete sendUser.password;
+    return res.status(200).json(sendUser);
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
 
-// // encryption
-// async function encryption(str) {
-//   try {
-//     const hash = await bcrypt.hash(str + process.env.ENCRYPTION_KEY, 10);
-//     return hash;
-//   } catch (err) {
-//     throw new Error("Error in encryption: " + err.message);
-//   }
-// }
-// async function compareHash(str, hashedPassword) {
-//   return await bcrypt.compare(str + process.env.ENCRYPTION_KEY, hashedPassword);
-// }
+async function getUserById(req, res) {
+  try {
+    const uid = req.params.id;
+    const user = await User.findOne({ _id: uid });
+    const sendUser = user.toObject();
+
+    delete sendUser.password;
+    delete sendUser.password;
+    delete sendUser.email;
+    delete sendUser.phoneNumber;
+    delete sendUser.birthday;
+
+    return res.status(200).json(sendUser);
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+async function getUsersByUsername(req, res) {
+  try {
+    const username = req.params.username;
+    const users = await User.find({
+      username: { $regex: username, $options: "i" },
+    });
+    users.forEach((user) => {
+      const sendUser = user.toObject();
+
+      delete sendUser.password;
+      delete sendUser.password;
+      delete sendUser.email;
+      delete sendUser.phoneNumber;
+      delete sendUser.birthday;
+      return sendUser;
+    });
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+async function followUserById(req, res) {
+  try {
+    const uid = req.params.id;
+    const user = await User.findOne({ _id: req.user.id });
+    const followedUser = await User.findOne({ _id: uid });
+
+    if (!user.following.includes(followedUser.id)) {
+      user.following.push(followedUser.id);
+    } else {
+      user.following.splice(user.following.indexOf(followedUser.id), 1);
+    }
+    await User.findOneAndReplace({ _id: user.id }, user);
+
+    if (!followedUser.followers.includes(user.id)) {
+      followedUser.followers.push(user.id);
+    } else {
+      followedUser.followers.splice(followedUser.followers.indexOf(user.id), 1);
+    }
+    await User.findOneAndReplace({ _id: followedUser.id }, followedUser);
+    const checks = { me: user, him: followedUser };
+    // res.status(200).json(checks);
+    res.status(200).json({ message: "followed" });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
 const userController = {
   createUser,
   loginUser,
   verifyUnique,
+  getSelf,
+  getUserById,
+  getUsersByUsername,
+  followUserById,
 };
 export default userController;
