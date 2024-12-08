@@ -23,10 +23,9 @@ import { ClipLoader } from "react-spinners"; // Loading spinner
 function App() {
   const [loading, setLoading] = useState(true);
 
-
   return (
     <Provider store={store}>
-      <div className="bg-black w-screen h-screen m-0 p-0 text-white">
+      <div className="bg-black w-screen h-screen m-0 p-0 text-white max-w-[450px] mx-auto">
         <BrowserRouter>
           <AppInitializer setLoading={setLoading} />
           {loading ? (

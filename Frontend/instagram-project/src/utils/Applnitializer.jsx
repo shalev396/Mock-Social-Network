@@ -37,10 +37,10 @@ const AppInitializer = ({ setLoading }) => {
           }
         );
 
-        console.log(
-          "AppInitializer: Token validation successful. User:",
-          response.data
-        );
+        // console.log(
+        //   "AppInitializer: Token validation successful. User:",
+        //   response.data
+        // );
         dispatch(login({ token, user: response.data })); // Set Redux state
       } catch (error) {
         console.error("AppInitializer: Token validation failed:", error);
@@ -48,7 +48,7 @@ const AppInitializer = ({ setLoading }) => {
         sessionStorage.removeItem("user");
         dispatch(logout()); // Clear Redux state
       } finally {
-        console.log("AppInitializer: Initialization complete.");
+        // console.log("AppInitializer: Initialization complete.");
         setLoading(false); // Stop loading
       }
     };

@@ -12,25 +12,36 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
+const Dev_Url = "http://85.250.95.96:3006/";
 
-const EditProfile = () => {
-  const navigate = useNavigate();
-  const token = useSelector((state) => state.auth.token);
+const EditProfile = ({ open, handleClose, user, token }) => {
+  console.log(user);
+  // const navigate = useNavigate();
+
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
-  const [imageContent, setImageContent] = useState("");
+  // const [imageContent, setImageContent] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
-  const [isPreview, setIsPreview] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
+  const [username, setUsername] = useState(user?.username || "");
+  const [bio, setBio] = useState(user?.bio || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [email, setEmail] = useState(user?.email || "");
 
-  const sharePost = async (image) => {
+  const editProfile = async () => {
+    console.log(user);
     try {
       const res = await axios.post(
-        "http://85.250.95.96:3006/api/posts/",
+        `${Dev_Url}api/users/edit`,
         {
-          media: image,
-          content,
+          username: username,
+          bio: bio,
+          phone: phone,
+          email: email,
+          profilePic: uploadedImageUrl,
         },
         {
           headers: {
@@ -39,7 +50,7 @@ const EditProfile = () => {
         }
       );
     } catch (error) {
-      console.error("Uploading failed:", error);
+      console.error("Editing failed:", error);
     }
   };
 
@@ -56,6 +67,7 @@ const EditProfile = () => {
     formData.append("file", image);
     formData.append("upload_preset", "Mock-Social-Network-Preset");
     formData.append("cloud_name", "dnnifnoyf");
+    setIsUploading(true);
 
     try {
       const response = await axios.post(
@@ -68,14 +80,9 @@ const EditProfile = () => {
     } catch (error) {
       console.error(error);
       setUploadStatus("Error uploading image.");
+    } finally {
+      setIsUploading(false);
     }
-  };
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-    navigate("/homepage");
   };
 
   return (
@@ -95,8 +102,8 @@ const EditProfile = () => {
           },
         }}
         // onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
         open={open}
+        aria-labelledby="customized-dialog-title"
       >
         <DialogTitle
           sx={{
@@ -111,7 +118,7 @@ const EditProfile = () => {
           }}
           id="customized-dialog-title"
         >
-          Create a Post
+          Edit your Profile
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -133,99 +140,95 @@ const EditProfile = () => {
             padding: "20px",
           }}
         >
-          {isPreview ? (
-            <>
-              <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
-                <label
-                  htmlFor="fileInput"
-                  style={{
-                    display: "inline-block",
-                    backgroundColor: "rgb(30,30,30)",
-                    padding: "10px 20px",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                    color: "rgb(220,220,220)",
-                    fontSize: "0.9rem",
-                    border: "1px solid rgb(80,80,80)",
-                  }}
-                >
-                  Choose File
-                </label>
-                <input
-                  id="fileInput"
-                  type="file"
-                  onChange={handleImageChange}
-                  style={{ display: "none" }}
-                />
-                <button
-                  onClick={handleUpload}
-                  style={{
-                    display: "block",
-                    margin: "10px auto",
-                    color: "#0095f6",
-                    fontWeight: "bold",
-                    fontSize: "0.9rem",
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                  }}
-                >
-                  Upload
-                </button>
-              </Box>
-              <Box>
-                {uploadStatus && (
-                  <p style={{ color: "rgb(180,180,180)", fontSize: "0.85rem" }}>
-                    {uploadStatus}
-                  </p>
-                )}
-              </Box>
-              <Box>
-                <div style={{ marginBottom: "20px" }}>
-                  <textarea
-                    onChange={(e) => setImageContent(e.target.value)}
-                    style={{
-                      width: "100%",
-                      height: "150px",
-                      borderRadius: "5px",
-                      border: "1px solid rgb(80,80,80)",
-                      padding: "10px",
-                      fontSize: "0.9rem",
-                      color: "rgb(220,220,220)",
-                      resize: "none",
-                      backgroundColor: "rgb(30,30,30)",
-                    }}
-                    placeholder="Type here..."
-                  />
-                </div>
-              </Box>
-            </>
-          ) : (
-            <div
-              style={{
-                width: "100%",
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
+          <Box></Box>
+          <>
+            <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
               <img
-                src={uploadedImageUrl}
-                alt="Uploaded"
-                style={{
-                  maxWidth: "70%",
-                  borderRadius: "10px",
-                  marginBottom: "20px",
-                  border: "1px solid rgb(60,60,60)",
-                }}
+                className="w-20 h-20 rounded-full object-cover mx-auto m-4"
+                src={user.profilePic || " Edit profile pic"}
+                alt="profile pic"
               />
-              <p style={{ fontSize: "1rem", color: "rgb(220,220,220)" }}>
-                {imageContent}
-              </p>
-            </div>
-          )}
+              {/* <p className="pb-2">Edit profile pic</p> */}
+              <label
+                htmlFor="fileInput"
+                style={{
+                  display: "inline-block",
+                  backgroundColor: "rgb(30,30,30)",
+                  padding: "10px 20px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  color: "rgb(220,220,220)",
+                  fontSize: "0.9rem",
+                  border: "1px solid rgb(80,80,80)",
+                }}
+              >
+                Choose File
+              </label>
+              <input
+                id="fileInput"
+                type="file"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
+              <button
+                onClick={handleUpload}
+                className=" pt-3 block mx-auto text-[#0095f6] font-bold text-sm cursor-pointer bg-none border-none hover:text-blue-400 transition"
+              >
+                Upload
+              </button>
+            </Box>
+            <Box>
+              {console.log(isUploading)}
+              {isUploading ? (
+                <div className="flex justify-center pb-3">
+                  <ClipLoader color="#ffffff" size={40} />
+                </div>
+              ) : (
+                <p style={{ color: "rgb(180,180,180)", fontSize: "0.85rem" }}>
+                  {uploadStatus}
+                </p>
+              )}
+            </Box>
+            <Box>
+              <div className="field">
+                <label className="block text-sm font-bold mb-1">Username</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full py-2 px-4 mb-3 text-sm bg-black rounded-md border border-gray-600"
+                />
+              </div>
+              <div className="field">
+                <label className="block text-sm font-bold mb-1">Bio</label>
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  className="w-full py-2 px-4 mb-3 text-sm bg-black rounded-md border border-gray-600"
+                  rows={3}
+                ></textarea>
+              </div>
+              <div className="field">
+                <label className="block text-sm font-bold mb-1">Phone</label>
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full py-2 px-4 mb-3 text-sm bg-black rounded-md border border-gray-600"
+                />
+              </div>
+              <div className="field">
+                <label className="block text-sm font-bold mb-1">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full py-2 px-4 mb-3 text-sm bg-black rounded-md border border-gray-600"
+                />
+              </div>
+            </Box>
+          </>
         </DialogContent>
 
         <DialogActions
@@ -236,40 +239,22 @@ const EditProfile = () => {
             justifyContent: "flex-end",
           }}
         >
-          {isPreview ? (
-            <Button
-              onClick={() => setIsPreview(false)}
-              sx={{
-                textTransform: "none",
-                color: "#0095f6",
-                fontWeight: "bold",
-              }}
-              disabled={!uploadedImageUrl || !imageContent}
-            >
-              Save changes
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                sharePost(uploadedImageUrl, imageContent);
-                handleClose();
-                // window.location.reload();
-              }}
-              sx={{
-                textTransform: "none",
-                backgroundColor: "#0095f6",
-                fontWeight: "bold",
-                color: "white",
-                padding: "10px 20px",
-                borderRadius: "5px",
-                "&:hover": {
-                  backgroundColor: "#007bb5",
-                },
-              }}
-            >
-              Share
-            </Button>
-          )}
+          <Button
+            onClick={() => {
+              editProfile();
+              handleClose();
+              setTimeout(() => {
+                window.location.reload();
+              }, 300);
+            }}
+            sx={{
+              textTransform: "none",
+              color: "#0095f6",
+              fontWeight: "bold",
+            }}
+          >
+            Save changes
+          </Button>
         </DialogActions>
       </BootstrapDialog>
 

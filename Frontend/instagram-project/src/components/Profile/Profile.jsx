@@ -17,6 +17,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [openEditProfileDialog, setOpenEditProfileDialog] = useState(false);
   useEffect(() => {
     const fetchUserPosts = async () => {
       if (!user || !token) {
@@ -54,6 +55,9 @@ const Profile = () => {
     }
     return followersCount;
   };
+
+  const openDialog = () => setOpenEditProfileDialog(true);
+  const closeDialog = () => setOpenEditProfileDialog(false);
 
   return (
     <div className="flex items-center justify-center w-[450px]">
@@ -98,12 +102,12 @@ const Profile = () => {
           </div>
         </div>
         <div>
-          <h2 className="text-xl font-bold pb-4">{user?.name || "Name"}</h2>
+          {/* <h2 className="text-xl font-bold pb-4">{user?.name || "Name"}</h2> */}
           <p>{user?.bio || "Bio"}</p>
         </div>
         <div className="flex items-center justify-center gap-4">
           <button
-            onClick={<EditProfile />}
+            onClick={openDialog}
             className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-800 py-2 w-[248px] hover:bg-gray-700"
           >
             Edit profile
@@ -114,6 +118,12 @@ const Profile = () => {
         </div>
       </div>
       <BottomNav index={4} />
+      <EditProfile
+        open={openEditProfileDialog}
+        handleClose={closeDialog}
+        user={user}
+        token={token}
+      />
     </div>
   );
 };

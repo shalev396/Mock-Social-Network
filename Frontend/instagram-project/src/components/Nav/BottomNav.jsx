@@ -36,6 +36,7 @@ function BottomNav({ index }) {
         position: "fixed",
         bottom: 0,
         width: "100%",
+        maxWidth: "450px",
         backgroundColor: "black",
         borderTop: "1px solid #333",
       }}

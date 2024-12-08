@@ -1,7 +1,6 @@
 import React from "react";
 
 const Grid = ({ images }) => {
-  console.log(images);
   return (
     <div className="pt-4 grid grid-cols-3 overflow-hidden grid-rows-[33%_33%_33%]">
       {images.map((image) => (

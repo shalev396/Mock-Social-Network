@@ -14,6 +14,7 @@ import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
 const AddPage = () => {
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
@@ -22,6 +23,7 @@ const AddPage = () => {
   const [imageContent, setImageContent] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
 
   const sharePost = async (image, content) => {
     console.log("baba");
@@ -56,7 +58,7 @@ const AddPage = () => {
     formData.append("file", image);
     formData.append("upload_preset", "Mock-Social-Network-Preset");
     formData.append("cloud_name", "dnnifnoyf");
-
+    setIsUploading(true);
     try {
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/dnnifnoyf/image/upload`,
@@ -68,6 +70,8 @@ const AddPage = () => {
     } catch (error) {
       console.error(error);
       setUploadStatus("Error uploading image.");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -159,22 +163,17 @@ const AddPage = () => {
                 />
                 <button
                   onClick={handleUpload}
-                  style={{
-                    display: "block",
-                    margin: "10px auto",
-                    color: "#0095f6",
-                    fontWeight: "bold",
-                    fontSize: "0.9rem",
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                  }}
+                  className=" pt-3 block mx-auto text-[#0095f6] font-bold text-sm cursor-pointer bg-none border-none hover:text-blue-400 transition"
                 >
                   Upload
                 </button>
               </Box>
               <Box>
-                {uploadStatus && (
+                {isUploading ? (
+                  <div className="flex justify-center pb-3">
+                    <ClipLoader color="#ffffff" size={40} />
+                  </div>
+                ) : (
                   <p style={{ color: "rgb(180,180,180)", fontSize: "0.85rem" }}>
                     {uploadStatus}
                   </p>
