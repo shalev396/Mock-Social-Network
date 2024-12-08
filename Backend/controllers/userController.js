@@ -188,6 +188,30 @@ async function followUserById(req, res) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+async function editUser(req, res) {
+  try {
+    const uid = req.user.id;
+
+    const updates = {
+      ...(req.body.username && { username: req.body.username }),
+      ...(req.body.email && { email: req.body.email }),
+      ...(req.body.phoneNumber && { phoneNumber: req.body.phoneNumber }),
+      ...(req.body.profilePic && { profilePic: req.body.profilePic }),
+      ...(req.body.bio && { bio: req.body.bio }),
+    };
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: uid },
+      { $set: updates },
+      { new: false, upsert: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 const userController = {
   createUser,
   loginUser,
@@ -196,5 +220,6 @@ const userController = {
   getUserById,
   getUsersByUsername,
   followUserById,
+  editUser,
 };
 export default userController;

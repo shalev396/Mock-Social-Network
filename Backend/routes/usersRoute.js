@@ -53,7 +53,12 @@ router.get(
 );
 
 //Post
-
+//edit user
+router.post(
+  "/edit",
+  validator.validateUser.editUserValidation,
+  userController.editUser
+);
 //follow user by id
 router.post(
   "/follow/:id",
