@@ -3,8 +3,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import PersonIcon from "@mui/icons-material/Person"; 
 import SearchSharpIcon from '@mui/icons-material/SearchSharp';
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
+  const navigate = useNavigate(); // UseNavigate hook for navigation
   const [users, setUsers] = useState([]); // State to store fetched users
   const [query, setQuery] = useState(""); // State to store the input value
   const token = useSelector((state) => state.auth.token); // Token from Redux
@@ -37,7 +39,7 @@ const Search = () => {
       console.error("Error fetching users:", error);
     }
   };
-
+  
   return (
     <div className="p-4 border-gray border-b-2">
     <div className="flex gap-4">
@@ -54,8 +56,9 @@ const Search = () => {
       <ul>
         {users.map((user) => (
           <li
-            key={user.id}
+            key={user._id}
             className="flex items-center gap-4 mb-2 border p-2 rounded hover:bg-gray-100 "
+            onClick={()=> navigate(`/user/${user._id}`)}  
           >
             <img
               src={user.profilePic !== "" ? user.profilePic : <PersonIcon/>} // ProfilePic or fallback icon
