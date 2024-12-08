@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/" replace />; // Redirect to login if no token
   }
 
-  return children; // Render protected content
+  return children;
 };
 
 export default ProtectedRoute;

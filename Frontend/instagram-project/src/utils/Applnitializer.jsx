@@ -8,17 +8,18 @@ const AppInitializer = ({ setLoading }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      console.log("AppInitializer: Starting initialization...");
+      // console.log("AppInitializer: Starting initialization...");
       const token = sessionStorage.getItem("authToken");
       //todo
       // const userData = sessionStorage.getItem("user");
 
-      console.log("AppInitializer: Retrieved token:", token);
+      // console.log("AppInitializer: Retrieved token:", token);
       // console.log("AppInitializer: Retrieved user:", userData);
 
-      if (!token
+      if (
+        !token
         //  || !userData
-        ) {
+      ) {
         console.error("AppInitializer: No token or user found. Logging out...");
         sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("user");
@@ -28,12 +29,18 @@ const AppInitializer = ({ setLoading }) => {
       }
 
       try {
-        console.log("AppInitializer: Validating token...");
-        const response = await axios.get("http://85.250.95.96:3006/api/users/self", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        // console.log("AppInitializer: Validating token...");
+        const response = await axios.get(
+          "http://85.250.95.96:3006/api/users/self",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-        console.log("AppInitializer: Token validation successful. User:", response.data);
+        // console.log(
+        //   "AppInitializer: Token validation successful. User:",
+        //   response.data
+        // );
         dispatch(login({ token, user: response.data })); // Set Redux state
       } catch (error) {
         console.error("AppInitializer: Token validation failed:", error);
@@ -41,7 +48,7 @@ const AppInitializer = ({ setLoading }) => {
         sessionStorage.removeItem("user");
         dispatch(logout()); // Clear Redux state
       } finally {
-        console.log("AppInitializer: Initialization complete.");
+        // console.log("AppInitializer: Initialization complete.");
         setLoading(false); // Stop loading
       }
     };
