@@ -13,18 +13,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
 const AddPage = () => {
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [imageContent, setImageContent] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
 
   const sharePost = async (image, content) => {
-    const token = sessionStorage.getItem("authToken");
-
+    console.log("baba");
     try {
       const res = await axios.post(
         "http://85.250.95.96:3006/api/posts/",
@@ -56,7 +58,7 @@ const AddPage = () => {
     formData.append("file", image);
     formData.append("upload_preset", "Mock-Social-Network-Preset");
     formData.append("cloud_name", "dnnifnoyf");
-
+    setIsUploading(true);
     try {
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/dnnifnoyf/image/upload`,
@@ -68,17 +70,16 @@ const AddPage = () => {
     } catch (error) {
       console.error(error);
       setUploadStatus("Error uploading image.");
+    } finally {
+      setIsUploading(false);
     }
   };
 
   const [open, setOpen] = React.useState(true);
-  console.log(open);
-  // const handleClickOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     navigate("/homepage");
   };
-  // handleClickOpen();
 
   return (
     <React.Fragment>
@@ -162,22 +163,17 @@ const AddPage = () => {
                 />
                 <button
                   onClick={handleUpload}
-                  style={{
-                    display: "block",
-                    margin: "10px auto",
-                    color: "#0095f6",
-                    fontWeight: "bold",
-                    fontSize: "0.9rem",
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                  }}
+                  className=" pt-3 block mx-auto text-[#0095f6] font-bold text-sm cursor-pointer bg-none border-none hover:text-blue-400 transition"
                 >
                   Upload
                 </button>
               </Box>
               <Box>
-                {uploadStatus && (
+                {isUploading ? (
+                  <div className="flex justify-center pb-3">
+                    <ClipLoader color="#ffffff" size={40} />
+                  </div>
+                ) : (
                   <p style={{ color: "rgb(180,180,180)", fontSize: "0.85rem" }}>
                     {uploadStatus}
                   </p>
@@ -255,7 +251,7 @@ const AddPage = () => {
               onClick={() => {
                 sharePost(uploadedImageUrl, imageContent);
                 handleClose();
-                window.location.reload();
+                // window.location.reload();
               }}
               sx={{
                 textTransform: "none",

@@ -15,7 +15,6 @@
 
 // export default ProtectedRoute;
 
-
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -41,7 +40,10 @@ const ProtectedRoute = () => {
         });
         setIsAuthenticated(true); // Token is valid
       } catch (error) {
-        console.error("ProtectedRoute: Token validation failed. Logging out...", error);
+        console.error(
+          "ProtectedRoute: Token validation failed. Logging out...",
+          error
+        );
         dispatch(logout()); // Clear Redux state
         setIsAuthenticated(false); // Mark as unauthenticated
       }
@@ -63,4 +65,3 @@ const ProtectedRoute = () => {
 };
 
 export default ProtectedRoute;
-

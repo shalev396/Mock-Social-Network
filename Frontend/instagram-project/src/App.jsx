@@ -18,14 +18,14 @@ import NotFound from "./components/NotFound";
 import AppInitializer from "./utils/Applnitializer";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
-import { ClipLoader } from "react-spinners"; // Loading spinner
+import { ClipLoader } from "react-spinners";
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   return (
     <Provider store={store}>
-      <div className="bg-black w-screen h-screen m-0 p-0 text-white">
+      <div className="bg-black w-screen h-screen m-0 p-0 text-white max-w-[450px] mx-auto">
         <BrowserRouter>
           <AppInitializer setLoading={setLoading} />
           {loading ? (

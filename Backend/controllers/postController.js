@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import Post from "../models/post.js";
 import User from "../models/user.js";
 import Comment from "../models/comment.js";
+import post from "../models/post.js";
 
 async function createPost(req, res) {
   try {
@@ -42,8 +43,6 @@ async function getAllPosts(req, res) {
       const commentsForPost = allComments.filter(
         (comment) => comment.postId.toString() === postIdString
       );
-      // console.log(commentsForPost);
-
       const firstComment = commentsForPost[0];
 
       return {
@@ -86,7 +85,6 @@ async function getPostById(req, res) {
     const post = await Post.find({ _id: id })
       .populate("authorId", "username profilePic")
       .lean();
-    console.log(post);
     post[0].author = post[0].authorId;
     delete post[0].authorId;
     res.status(200).json(post);
@@ -96,46 +94,85 @@ async function getPostById(req, res) {
 }
 async function likePostById(req, res) {
   try {
-    const PostId = req.params.id;
+    const postId = req.params.id;
     const userId = req.user.id;
-    const result = await Post.find({ _id: PostId });
-    const post = result[0];
-    console.log(userId);
+    //I AM COOKING !!!!!!! TOOK 2 HOURS TO MAKE IN 1 CALL TO MONGODB
+    const updatedPost = await Post.findOneAndUpdate(
+      { _id: postId },
+      [
+        {
+          //replaces
+          $set: {
+            likes: {
+              //mongodb if syntax
+              $cond: {
+                if: { $in: [userId, "$likes"] },
+                then: {
+                  //filter that is mongodb if
+                  $filter: {
+                    input: "$likes",
+                    //ne=not the same $$this=likes array
+                    //so it filters out the userId
+                    cond: { $ne: ["$$this", userId] },
+                  },
+                },
+                // /combine array
+                else: { $concatArrays: ["$likes", [userId]] },
+              },
+            },
+          },
+        },
+      ],
+      //true if needs update in db
+      { new: true }
+    );
 
-    console.log(post);
-
-    if (!post.likes.includes(userId)) {
-      post.likes.push(userId);
-    } else {
-      post.likes.splice(post.likes.indexOf(userId), 1);
-    }
-    console.log(post);
-    await Post.findOneAndReplace({ _id: post.id }, post);
-
-    res.status(200).json(post);
+    res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 }
 
 async function getPostByUserId(req, res) {
+  //i know this isnt efficient but i cant learn all of mongodb syntax by myself ($match,$lookup,$unwind,$group,$sort,$project)
   try {
     const id = req.params.id;
     const posts = await Post.find({ authorId: id })
       .populate("authorId", "username profilePic")
       .lean();
-    console.log(posts);
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 }
+async function getFollowerPost(req, res) {
+  try {
+    const posts = [];
+    const userId = req.user.id;
+    const fullUser = await User.findOne({ _id: userId });
+    console.log(fullUser.following);
 
+    for (const followed of fullUser.following) {
+      const post = await Post.find({ authorId: followed })
+        .populate("authorId", "username profilePic")
+        .lean();
+      console.log(post);
+      posts.push(...post);
+    }
+    console.log(posts);
+
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
 const postController = {
   createPost,
   getAllPosts,
   getPostById,
   likePostById,
   getPostByUserId,
+  getFollowerPost,
 };
 export default postController;
