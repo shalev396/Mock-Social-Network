@@ -94,25 +94,47 @@ async function getPostById(req, res) {
 }
 async function likePostById(req, res) {
   try {
-    const PostId = req.params.id;
+    const postId = req.params.id;
     const userId = req.user.id;
-    const result = await Post.find({ _id: PostId });
-    const post = result[0];
+    //I AM COOKING !!!!!!! TOOK 2 HOURS TO MAKE IN 1 CALL TO MONGODB
+    const updatedPost = await Post.findOneAndUpdate(
+      { _id: postId },
+      [
+        {
+          //replaces
+          $set: {
+            likes: {
+              //mongodb if syntax
+              $cond: {
+                if: { $in: [userId, "$likes"] },
+                then: {
+                  //filter that is mongodb if
+                  $filter: {
+                    input: "$likes",
+                    //ne=not the same $$this=likes array
+                    //so it filters out the userId
+                    cond: { $ne: ["$$this", userId] },
+                  },
+                },
+                // /combine array
+                else: { $concatArrays: ["$likes", [userId]] },
+              },
+            },
+          },
+        },
+      ],
+      //true if needs update in db
+      { new: true }
+    );
 
-    if (!post.likes.includes(userId)) {
-      post.likes.push(userId);
-    } else {
-      post.likes.splice(post.likes.indexOf(userId), 1);
-    }
-    await Post.findOneAndReplace({ _id: post.id }, post);
-
-    res.status(200).json(post);
+    res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 }
 
 async function getPostByUserId(req, res) {
+  //i know this isnt efficient but i cant learn all of mongodb syntax by myself ($match,$lookup,$unwind,$group,$sort,$project)
   try {
     const id = req.params.id;
     const posts = await Post.find({ authorId: id })

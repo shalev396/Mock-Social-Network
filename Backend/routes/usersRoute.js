@@ -54,12 +54,14 @@ router.get(
 
 //Post
 //edit user
+//TODO: change to PATCH
 router.post(
   "/edit",
   validator.validateUser.editUserValidation,
   userController.editUser
 );
 //follow user by id
+//TODO PATCH
 router.post(
   "/follow/:id",
   validator.validateUser.followUserByIdValidation,

@@ -14,6 +14,7 @@ const router = express.Router();
 //Routes
 //Post
 //likes comment
+//TODO PATCH
 router.post(
   "/like/:id",
   validator.validateComment.LikeCommentValidation,

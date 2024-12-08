@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import authenticator from "../middleware/Authenticator.js";
 //import models
 import User from "../models/user.js";
+import mongoose from "mongoose";
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 async function createUser(req, res) {
@@ -122,17 +123,12 @@ async function getSelf(req, res) {
 
 async function getUserById(req, res) {
   try {
-    const uid = req.params.id;
-    const user = await User.findOne({ _id: uid });
-    const sendUser = user.toObject();
-
-    delete sendUser.password;
-    delete sendUser.password;
-    delete sendUser.email;
-    delete sendUser.phoneNumber;
-    delete sendUser.birthday;
-
-    return res.status(200).json(sendUser);
+    //do not get some details
+    const user = await User.findOne(
+      { _id: req.params.id },
+      { password: 0, email: 0, phoneNumber: 0, birthday: 0 }
+    );
+    return res.status(200).json(user);
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -181,7 +177,6 @@ async function followUserById(req, res) {
     }
     await User.findOneAndReplace({ _id: followedUser.id }, followedUser);
     const checks = { me: user, him: followedUser };
-    // res.status(200).json(checks);
     res.status(200).json(checks);
   } catch (error) {
     console.error("Error:", error);
