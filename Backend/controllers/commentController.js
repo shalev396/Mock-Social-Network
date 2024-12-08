@@ -70,21 +70,37 @@ async function getCommentByPostId(req, res) {
 }
 async function likeCommentById(req, res) {
   try {
-    const CommentId = req.params.id;
+    const commentId = req.params.id;
     const userId = req.user.id;
-    const result = await Comment.find({ _id: CommentId });
-    const comment = result[0];
-    console.log(comment);
 
-    if (!comment.likes.includes(userId)) {
-      comment.likes.push(userId);
-    } else {
-      comment.likes.splice(comment.likes.indexOf(userId), 1);
+    const updatedComment = await Comment.findOneAndUpdate(
+      { _id: commentId },
+      [
+        {
+          $set: {
+            likes: {
+              $cond: {
+                if: { $in: [userId, "$likes"] },
+                then: {
+                  $filter: {
+                    input: "$likes",
+                    cond: { $ne: ["$$this", userId] },
+                  },
+                },
+                else: { $concatArrays: ["$likes", [userId]] },
+              },
+            },
+          },
+        },
+      ],
+      { new: true }
+    );
+
+    if (!updatedComment) {
+      return res.status(404).json({ message: "Comment not found" });
     }
-    console.log(comment);
-    await Comment.findOneAndReplace({ _id: comment.id }, comment);
 
-    res.status(200).json(comment);
+    res.status(200).json(updatedComment);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

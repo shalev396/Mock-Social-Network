@@ -53,7 +53,19 @@ const followUserByIdValidation = (req, res, next) => {
   }
   next();
 };
-
+const editUserValidation = (req, res, next) => {
+  if (
+    !req.body.username &&
+    req.body.email &&
+    req.body.phoneNumber &&
+    req.body.profilePic
+  ) {
+    return res.status(400).send({
+      message: "Missing Filed",
+    });
+  }
+  next();
+};
 const validateUser = {
   createUserValidation,
   loginUserValidation,
@@ -61,6 +73,7 @@ const validateUser = {
   getUserByIdValidation,
   getUsersByUsernameValidation,
   followUserByIdValidation,
+  editUserValidation,
 };
 //posts
 const createPostValidation = (req, res, next) => {
@@ -72,11 +85,6 @@ const createPostValidation = (req, res, next) => {
   next();
 };
 
-const getallPostValidation = (req, res, next) => {
-  //TODO: verify only our website can get and add uid to url for customized content
-
-  next();
-};
 const getPostByIdValidation = (req, res, next) => {
   if (!req.params.id) {
     return res.status(400).send({
@@ -102,12 +110,24 @@ const getPostByUserIdValidation = (req, res, next) => {
   }
   next();
 };
+const getallPostValidation = (req, res, next) => {
+  //TODO: verify only our website can get and add uid to url for customized content
+
+  next();
+};
+const getFollowerPostValidation = (req, res, next) => {
+  //TODO: verify only our website can get and add uid to url for customized content
+  console.log("follow");
+
+  next();
+};
 const validatePost = {
   createPostValidation,
   getallPostValidation,
   getPostByIdValidation,
   LikePostValidation,
   getPostByUserIdValidation,
+  getFollowerPostValidation,
 };
 //comments
 const createCommentValidation = (req, res, next) => {

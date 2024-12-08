@@ -1,307 +1,546 @@
-# API Endpoints Documentation
+# API Documentation
 
 ## Base URL
 
-http://85.250.87.24:3006
+http://85.250.95.96:3006
 
 ## Authentication
 
-### JWT Token Format
+All protected routes require a JWT token in the Authorization header:
+`Authorization: Bearer <token>`
 
-The API uses JWT (JSON Web Token) for authentication. Tokens are provided upon login and should be included in subsequent requests.
+# User Endpoints
 
-#### Token Location
-
-1. Authorization Header:
-
-   ```javascript
-   headers: {
-      Authorization: "Bearer <your_jwt_token>",
-    };
-   ```
-
-2. Cookie (httpOnly):
-
-- Name: 'jwt'
-- Max Age: 1 hour
-- Secure: true (in production)
-- SameSite: strict
-
-### Cookie Configuration
-
-```javascript
-  {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 3600000 // 1 hour
-  }
-```
-
-## User Endpoints
-
-### 1. Create User
+### 1. Create User (Sign Up)
 
 - **Method:** POST
 - **URL:** `/api/users/signup`
-- **Description:** Creates a new user account
-- **Authentication:** None required
-- **Body Requirements:**
+- **Body:**
 
 ```json
 {
-  "username": "String (unique)",
-  "email": "String (unique)",
-  "password": "String",
-  "birthday": "Date",
-  "phoneNumber": "String (unique)",
-  "profilePic": "String (optional)"
+  "username": "string",
+  "email": "string",
+  "password": "string",
+  "birthday": "date",
+  "phoneNumber": "string",
+  "profilePic": "string (optional)"
 }
 ```
 
-- **Response Example:**
+- **Response (201):**
 
 ```json
 {
+  "_id": "string",
+  "username": "string",
+  "email": "string",
+  "profilePic": "string",
+  "birthday": "date",
+  "phoneNumber": "string",
+  "following": [],
+  "followers": []
+}
+```
+
+### 2. Login User
+
+- **Method:** POST
+- **URL:** `/api/users/login`
+- **Body:**
+
+```json
+{
+  "username": "string (username/email/phoneNumber)",
+  "password": "string"
+}
+```
+
+- **Response (200):**
+
+```json
+{
+  "message": "Login successful",
+  "token": "jwt_token_string",
   "user": {
-    "username": "john_doe",
-    "email": "john@example.com",
-    "phoneNumber": "+1234567890",
-    "profilePic": "https://example.com/pic.jpg",
-    "id": "123456789"
-  },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    "_id": "string",
+    "username": "string",
+    "email": "string",
+    "profilePic": "string",
+    "following": [],
+    "followers": []
+  }
 }
 ```
 
-### 2. Verify Unique Fields
+- **Error Response (401):**
+
+```json
+{
+  "message": "Login credentials are invalid"
+}
+```
+
+### 3. Verify Unique Fields
 
 - **Method:** POST
 - **URL:** `/api/users/verify`
-- **Description:** Checks if username, email, and phone number are unique
-- **Authentication:** None required
-- **Body Requirements:**
+- **Body:**
 
 ```json
 {
-  "username": "String (optional)",
-  "email": "String (optional)",
-  "phoneNumber": "String (optional)"
+  "username": "string",
+  "email": "string",
+  "phoneNumber": "string"
 }
 ```
 
-- **Response Example:**
+- **Response (200):**
+
+```json
+{
+  "Unique": true
+}
+```
+
+- **Error Response (400):**
 
 ```json
 {
   "Unique": false,
   "details": {
-    "username": true,
-    "email": false,
-    "phoneNumber": true
+    "username": boolean,
+    "email": boolean,
+    "phoneNumber": boolean
   }
 }
 ```
 
-### 3. Login User
+### 4. Get Self
+
+- **Method:** GET
+- **URL:** `/api/users/self`
+- **Authentication:** Required
+- **Response (200):**
+
+```json
+{
+  "_id": "string",
+  "username": "string",
+  "email": "string",
+  "profilePic": "string",
+  "birthday": "date",
+  "phoneNumber": "string",
+  "following": ["userId"],
+  "followers": ["userId"]
+}
+```
+
+### 5. Search Users by Username
+
+- **Method:** GET
+- **URL:** `/api/users/search/:username`
+- **Authentication:** Required
+- **Response (200):**
+
+```json
+[
+  {
+    "_id": "string",
+    "username": "string",
+    "profilePic": "string",
+    "following": ["userId"],
+    "followers": ["userId"]
+  }
+]
+```
+
+### 6. Get User by ID
+
+- **Method:** GET
+- **URL:** `/api/users/:id`
+- **Authentication:** Required
+- **Response (200):**
+
+```json
+{
+  "_id": "string",
+  "username": "string",
+  "profilePic": "string",
+  "following": ["userId"],
+  "followers": ["userId"]
+}
+```
+
+### 7. Edit User Profile
 
 - **Method:** POST
-- **URL:** `/api/users/login`
-- **Description:** Authenticates user and returns JWT token
-- **Authentication:** None required
-- **Body Requirements:**
+- **URL:** `/api/users/edit`
+- **Authentication:** Required
+- **Body:**
 
 ```json
 {
-  "username": "String (can be username, email, or phoneNumber)",
-  "password": "String"
+  "username": "string (optional)",
+  "email": "string (optional)",
+  "phoneNumber": "string (optional)",
+  "profilePic": "string (optional)",
+  "bio": "string (optional)"
 }
 ```
 
-- **Response Example:**
+- **Response (200):**
 
 ```json
 {
-  "message": "Login successful",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": "123456789",
-    "username": "john_doe",
-    "email": "john@example.com",
-    "profilePic": "https://example.com/pic.jpg"
+  "_id": "string",
+  "username": "string",
+  "email": "string",
+  "phoneNumber": "string",
+  "profilePic": "string",
+  "bio": "string",
+  "following": ["userId"],
+  "followers": ["userId"]
+}
+```
+
+- **Error Response (500):**
+
+```json
+{
+  "message": "Internal server error"
+}
+```
+
+### 8. Follow/Unfollow User
+
+- **Method:** POST
+- **URL:** `/api/users/follow/:id`
+- **Authentication:** Required
+- **Params:**
+  - id: ID of user to follow/unfollow
+- **Response (200):**
+
+```json
+{
+  "me": {
+    "_id": "string",
+    "username": "string",
+    "following": ["userId"],
+    "followers": ["userId"]
+  },
+  "him": {
+    "_id": "string",
+    "username": "string",
+    "following": ["userId"],
+    "followers": ["userId"]
   }
 }
 ```
 
-## Posts Endpoints
+- **Error Response (500):**
+
+```json
+{
+  "message": "Internal server error"
+}
+```
+
+# Post Endpoints
 
 ### 1. Create Post
 
 - **Method:** POST
 - **URL:** `/api/posts`
-- **Description:** Creates a new post
 - **Authentication:** Required
-- **Body Requirements:**
+- **Body:**
 
 ```json
 {
-  "title": "String",
-  "content": "String",
-  "media": "String (URL)",
-  "authorId": "String"
+  "content": "string",
+  "image": "string (optional)",
+  "location": "string (optional)"
 }
 ```
 
-- **Response Example:**
+- **Response (201):**
 
 ```json
 {
-  "title": "My Post",
-  "content": "Post content",
-  "media": "https://example.com/image.jpg",
-  "authorId": "123456789",
+  "_id": "string",
+  "content": "string",
+  "image": "string",
+  "location": "string",
+  "author": {
+    "_id": "string",
+    "username": "string",
+    "profilePic": "string"
+  },
   "likes": [],
-  "commentsCount": 0,
-  "id": "987654321",
-  "createdAt": "2024-03-15T12:00:00.000Z"
+  "createdAt": "date",
+  "updatedAt": "date"
 }
 ```
 
-### 2. Get All Posts
+### 2. Like/Unlike Post
+
+- **Method:** POST
+- **URL:** `/api/posts/like/:id`
+- **Authentication:** Required
+- **Params:**
+  - id: Post ID to like/unlike
+- **Response (200):**
+
+```json
+{
+  "_id": "string",
+  "likes": ["userId"],
+  "likesCount": "number"
+}
+```
+
+- **Error Response (404):**
+
+```json
+{
+  "message": "Post not found"
+}
+```
+
+### 3. Get Posts from Followed Users
 
 - **Method:** GET
-- **URL:** `/api/posts`
-- **Description:** Retrieves all posts with their first comments
+- **URL:** `/api/posts/followed`
 - **Authentication:** Required
-- **Response Example:**
+- **Response (200):**
 
 ```json
 [
   {
-    "title": "Post 1",
-    "content": "Content 1",
-    "media": "https://example.com/image1.jpg",
-    "authorId": {
-      "username": "john_doe",
-      "email": "john@example.com",
-      "profilePic": "https://example.com/pic.jpg"
+    "_id": "string",
+    "content": "string",
+    "image": "string",
+    "location": "string",
+    "author": {
+      "_id": "string",
+      "username": "string",
+      "profilePic": "string"
     },
-    "likes": [],
-    "commentsCount": 0,
-    "id": "987654321",
-    "createdAt": "2024-03-15T12:00:00.000Z",
-    "firstComment": {
-      "_id": "commentId",
-      "text": "First comment",
-      "createdAt": "2024-03-15T12:01:00.000Z",
-      "author": {
-        "username": "jane_doe",
-        "profilePic": "https://example.com/jane.jpg"
-      }
-    }
+    "likes": ["userId"],
+    "likesCount": "number",
+    "createdAt": "date",
+    "updatedAt": "date"
   }
 ]
 ```
 
-### 3. Get Post by ID
+### 4. Get Posts by User ID
+
+- **Method:** GET
+- **URL:** `/api/posts/user/:id`
+- **Authentication:** Required
+- **Params:**
+  - id: User ID whose posts to retrieve
+- **Response (200):**
+
+```json
+[
+  {
+    "_id": "string",
+    "content": "string",
+    "image": "string",
+    "location": "string",
+    "author": {
+      "_id": "string",
+      "username": "string",
+      "profilePic": "string"
+    },
+    "likes": ["userId"],
+    "likesCount": "number",
+    "createdAt": "date",
+    "updatedAt": "date"
+  }
+]
+```
+
+### 5. Get Single Post
 
 - **Method:** GET
 - **URL:** `/api/posts/:id`
-- **Description:** Retrieves a specific post by ID
 - **Authentication:** Required
-- **Response Example:**
+- **Params:**
+  - id: Post ID to retrieve
+- **Response (200):**
 
 ```json
 {
-  "title": "Post 1",
-  "content": "Content 1",
-  "media": "https://example.com/image1.jpg",
-  "authorId": {
-    "username": "john_doe",
-    "email": "john@example.com"
+  "_id": "string",
+  "content": "string",
+  "image": "string",
+  "location": "string",
+  "author": {
+    "_id": "string",
+    "username": "string",
+    "profilePic": "string"
   },
-  "likes": [],
-  "commentsCount": 0,
-  "id": "987654321",
-  "createdAt": "2024-03-15T12:00:00.000Z"
+  "likes": ["userId"],
+  "likesCount": "number",
+  "createdAt": "date",
+  "updatedAt": "date"
 }
 ```
 
-## Comments Endpoints
+- **Error Response (404):**
+
+```json
+{
+  "message": "Post not found"
+}
+```
+
+### 6. Get All Posts
+
+- **Method:** GET
+- **URL:** `/api/posts`
+- **Authentication:** Required
+- **Response (200):**
+
+```json
+[
+  {
+    "_id": "string",
+    "content": "string",
+    "image": "string",
+    "location": "string",
+    "author": {
+      "_id": "string",
+      "username": "string",
+      "profilePic": "string"
+    },
+    "likes": ["userId"],
+    "likesCount": "number",
+    "createdAt": "date",
+    "updatedAt": "date"
+  }
+]
+```
+
+- **Error Response (500):**
+
+```json
+{
+  "message": "Internal server error"
+}
+```
+
+# Comment Endpoints
 
 ### 1. Create Comment
 
 - **Method:** POST
 - **URL:** `/api/comments`
-- **Description:** Creates a new comment on a post
 - **Authentication:** Required
-- **Body Requirements:**
+- **Body:**
 
 ```json
 {
-  "postId": "String",
-  "text": "String",
-  "authorId": "String"
+  "content": "string",
+  "postId": "string"
 }
 ```
 
-- **Response Example:**
+- **Response (201):**
 
 ```json
 {
-  "postId": "987654321",
-  "text": "Great post!",
-  "authorId": "123456789",
+  "_id": "string",
+  "content": "string",
+  "author": {
+    "_id": "string",
+    "username": "string",
+    "profilePic": "string"
+  },
+  "post": "string",
   "likes": [],
-  "id": "456789123",
-  "createdAt": "2024-03-15T12:00:00.000Z"
+  "likesCount": 0,
+  "createdAt": "date",
+  "updatedAt": "date"
 }
 ```
 
-### 2. Get Comments by Post ID
+- **Error Response (400):**
+
+```json
+{
+  "message": "Content and postId are required"
+}
+```
+
+### 2. Like/Unlike Comment
+
+- **Method:** POST
+- **URL:** `/api/comments/like/:id`
+- **Authentication:** Required
+- **Params:**
+  - id: Comment ID to like/unlike
+- **Response (200):**
+
+```json
+{
+  "_id": "string",
+  "likes": ["userId"],
+  "likesCount": "number"
+}
+```
+
+- **Error Response (404):**
+
+```json
+{
+  "message": "Comment not found"
+}
+```
+
+### 3. Get Comments by Post ID
 
 - **Method:** GET
 - **URL:** `/api/comments/post/:id`
-- **Description:** Retrieves all comments for a specific post
 - **Authentication:** Required
-- **Response Example:**
+- **Params:**
+  - id: Post ID to get comments for
+- **Response (200):**
 
 ```json
 [
   {
-    "postId": "987654321",
-    "text": "Comment 1",
-    "authorId": "123456789",
-    "likes": [],
-    "id": "456789123",
-    "createdAt": "2024-03-15T12:00:00.000Z"
+    "_id": "string",
+    "content": "string",
+    "author": {
+      "_id": "string",
+      "username": "string",
+      "profilePic": "string"
+    },
+    "post": "string",
+    "likes": ["userId"],
+    "likesCount": "number",
+    "createdAt": "date",
+    "updatedAt": "date"
   }
 ]
 ```
 
-## Extra Features (Stretch Goals)
+- **Error Response (404):**
 
-### Posts
+```json
+{
+  "message": "Post not found"
+}
+```
 
-- **GET** `/api/posts/:userid` - Get posts by user
-- **GET** `/api/posts/:keywords` - Search posts
-- **DELETE** `/api/posts/:id` - Delete post
-- **PUT** `/api/posts/report/:id` - Report post
+- **Error Response (500):**
 
-### Users
-
-- **GET** `/api/users/followers/:userid` - Get user followers
-- **GET** `/api/users/following/:userid` - Get user following
-
-### Comments
-
-- **DELETE** `/api/comments/:id` - Delete comment
-- **PUT** `/api/comments/report/:id` - Report comment
-
-### Stories
-
-- **GET** `/api/stories` - Get stories from last 24 hours
-- **GET** `/api/stories/:id` - Get specific story
-- **POST** `/api/stories` - Create new story
-- **DELETE** `/api/stories/:id` - Delete story
-- **PUT** `/api/stories/report/:id` - Report story
+```json
+{
+  "message": "Internal server error"
+}
+```
