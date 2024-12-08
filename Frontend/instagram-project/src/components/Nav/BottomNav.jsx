@@ -23,7 +23,10 @@ function BottomNav({ index }) {
     if (newValue === 1) navigate("/explore");
     if (newValue === 2) navigate("/add");
     if (newValue === 3) navigate("/reels");
-    if (newValue === 4) navigate("/profile");
+    if (newValue === 4) {
+      navigate("/profile");
+      window.location.reload()
+    }
   };
 
   return (
