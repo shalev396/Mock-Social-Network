@@ -11,13 +11,16 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import MovieIcon from "@mui/icons-material/Movie";
+// import AppLayout from "../Dialog/AppLayout";
+// import AddPage from "../AddPage/AddPage";
 
 function BottomNav({ index }) {
   const navigate = useNavigate();
-  const [value, setValue] = React.useState(index);
+  const [value, setValue] = React.useState(index || 0);
 
   const handleNavigation = (event, newValue) => {
     setValue(newValue);
+
     if (newValue === 0) navigate("/homepage");
     if (newValue === 1) navigate("/explore");
     if (newValue === 2) navigate("/add");
@@ -53,9 +56,10 @@ function BottomNav({ index }) {
         sx={{ color: "white" }}
       />
       <BottomNavigationAction
+        disabled
         label="Reels"
         icon={<MovieIcon />}
-        sx={{ color: "white" }}
+        sx={{ color: "grey" }}
       />
       <BottomNavigationAction
         label="Profile"

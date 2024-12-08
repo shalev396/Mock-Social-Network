@@ -1,10 +1,11 @@
 import React from "react";
 import BottomNav from "../Nav/BottomNav";
+import Grid from "../Profile/Grid";
 
 const Explore = () => {
   return (
     <div>
-      Explore
+      {/* <Grid /> */}
       <BottomNav index={1} />
     </div>
   );

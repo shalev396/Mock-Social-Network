@@ -12,8 +12,10 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
+import { useNavigate } from "react-router-dom";
 
 const AddPage = () => {
+  const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [imageContent, setImageContent] = useState("");
@@ -25,7 +27,7 @@ const AddPage = () => {
 
     try {
       const res = await axios.post(
-        "http://85.250.88.33:3006/api/posts/",
+        "http://85.250.95.96:3006/api/posts/",
         {
           media: image,
           content,
@@ -69,16 +71,17 @@ const AddPage = () => {
     }
   };
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open, setOpen] = React.useState(true);
+  console.log(open);
+  // const handleClickOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/homepage");
+  };
+  // handleClickOpen();
 
   return (
-    <Box>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button>
+    <React.Fragment>
       <BootstrapDialog
         sx={{
           maxWidth: "100%",
@@ -93,7 +96,7 @@ const AddPage = () => {
             overflow: "hidden",
           },
         }}
-        onClose={handleClose}
+        // onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
@@ -252,7 +255,7 @@ const AddPage = () => {
               onClick={() => {
                 sharePost(uploadedImageUrl, imageContent);
                 handleClose();
-                // window.location.reload();
+                window.location.reload();
               }}
               sx={{
                 textTransform: "none",
@@ -273,7 +276,7 @@ const AddPage = () => {
       </BootstrapDialog>
 
       <BottomNav index={2} />
-    </Box>
+    </React.Fragment>
   );
 };
 
