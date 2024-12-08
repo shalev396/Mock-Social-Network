@@ -42,9 +42,11 @@ const bool =   user.followers.includes(viewUser._id.toString())
 //   console.error("Error fetching user posts:", error);
 //   navigate("/");
 // }}
+
+
 useEffect(() => {
   const fetchData = async () => {
-    if (!id) return; // Exit if no ID is provided
+    if (!id) return ; // Exit if no ID is provided
 
     try {
       const response = await axios.get(`${Dev_Url}api/users/${id}`, {
@@ -134,13 +136,14 @@ useEffect(() => {
           <h1 className=" text-xl font-bold p-4">
             {user?.username || "Username"}
           </h1>
-          <button
+          {!id ? (          <button
             onClick={handleLogout}
             className="font-bold text-sm border-1 rounded-md border border-gray-800 mt-4 py-2 w-[100px] hover:bg-gray-800"
           >
             Log Out
             <LogoutIcon sx={{ fontSize: 20 }} className="pl-2" />
-          </button>
+          </button>) : ('')}
+
         </div>
         <div>
           <div className="flex items-center justify-center gap-4 p-4">
