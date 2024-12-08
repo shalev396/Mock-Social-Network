@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
@@ -23,7 +23,6 @@ import { ClipLoader } from "react-spinners"; // Loading spinner
 function App() {
   const [loading, setLoading] = useState(true);
 
-
   return (
     <Provider store={store}>
       <div className="bg-black w-screen h-screen m-0 p-0 text-white">
@@ -35,65 +34,23 @@ function App() {
             </div>
           ) : (
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<LogIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/birthdate" element={<BirthDate />} />
-              <Route
-                path="/homepage"
-                element={
-                  <ProtectedRoute>
-                    <HomePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/explore"
-                element={
-                  <ProtectedRoute>
-                    <Explore />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/add"
-                element={
-                  <ProtectedRoute>
-                    <AddPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/reels"
-                element={
-                  <ProtectedRoute>
-                    <ReelsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/p/:postid"
-                element={
-                  <ProtectedRoute>
-                    <SinglePostPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/p/:postid/comments"
-                element={
-                  <ProtectedRoute>
-                    <CommentsPage />
-                  </ProtectedRoute>
-                }
-              />
+
+              {/* Protected Routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/homepage" element={<HomePage />} />
+                <Route path="/explore" element={<Explore />} />
+                <Route path="/add" element={<AddPage />} />
+                <Route path="/reels" element={<ReelsPage />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/p/:postid" element={<SinglePostPage />} />
+                <Route path="/p/:postid/comments" element={<CommentsPage />} />
+              </Route>
+
+              {/* Catch-All Route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           )}
