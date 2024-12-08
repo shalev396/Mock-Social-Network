@@ -13,9 +13,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 const AddPage = () => {
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [imageContent, setImageContent] = useState("");
@@ -23,8 +24,7 @@ const AddPage = () => {
   const [isPreview, setIsPreview] = useState(true);
 
   const sharePost = async (image, content) => {
-    const token = sessionStorage.getItem("authToken");
-
+    console.log("baba");
     try {
       const res = await axios.post(
         "http://85.250.95.96:3006/api/posts/",
@@ -72,13 +72,10 @@ const AddPage = () => {
   };
 
   const [open, setOpen] = React.useState(true);
-  console.log(open);
-  // const handleClickOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     navigate("/homepage");
   };
-  // handleClickOpen();
 
   return (
     <React.Fragment>
@@ -255,7 +252,7 @@ const AddPage = () => {
               onClick={() => {
                 sharePost(uploadedImageUrl, imageContent);
                 handleClose();
-                window.location.reload();
+                // window.location.reload();
               }}
               sx={{
                 textTransform: "none",
