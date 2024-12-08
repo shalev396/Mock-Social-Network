@@ -12,18 +12,15 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
-// import { useNavigate } from "react-router-dom";
+
 import { useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
 const Dev_Url = "http://85.250.95.96:3006/";
 
 const EditProfile = ({ open, handleClose, user, token }) => {
-  console.log(user);
-  // const navigate = useNavigate();
-
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
-  // const [imageContent, setImageContent] = useState("");
+
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [username, setUsername] = useState(user?.username || "");
@@ -101,7 +98,6 @@ const EditProfile = ({ open, handleClose, user, token }) => {
             overflow: "hidden",
           },
         }}
-        // onClose={handleClose}
         open={open}
         aria-labelledby="customized-dialog-title"
       >
@@ -148,7 +144,7 @@ const EditProfile = ({ open, handleClose, user, token }) => {
                 src={user.profilePic || " Edit profile pic"}
                 alt="profile pic"
               />
-              {/* <p className="pb-2">Edit profile pic</p> */}
+
               <label
                 htmlFor="fileInput"
                 style={{
@@ -179,7 +175,6 @@ const EditProfile = ({ open, handleClose, user, token }) => {
               </button>
             </Box>
             <Box>
-              {console.log(isUploading)}
               {isUploading ? (
                 <div className="flex justify-center pb-3">
                   <ClipLoader color="#ffffff" size={40} />

@@ -102,7 +102,6 @@ const Profile = () => {
           </div>
         </div>
         <div>
-          {/* <h2 className="text-xl font-bold pb-4">{user?.name || "Name"}</h2> */}
           <p>{user?.bio || "Bio"}</p>
         </div>
         <div className="flex items-center justify-center gap-4">

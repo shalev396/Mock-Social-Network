@@ -11,8 +11,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import MovieIcon from "@mui/icons-material/Movie";
-// import AppLayout from "../Dialog/AppLayout";
-// import AddPage from "../AddPage/AddPage";
 
 function BottomNav({ index }) {
   const navigate = useNavigate();

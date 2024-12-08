@@ -18,7 +18,7 @@ import NotFound from "./components/NotFound";
 import AppInitializer from "./utils/Applnitializer";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
-import { ClipLoader } from "react-spinners"; // Loading spinner
+import { ClipLoader } from "react-spinners";
 
 function App() {
   const [loading, setLoading] = useState(true);
