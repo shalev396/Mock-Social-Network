@@ -57,7 +57,7 @@ const Profile = () => {
           <p>Bio</p>
         </div>
         <div className="flex items-center justify-center gap-4">
-          <button className="font-bold text-sm border-0 rounded-md mt-4 bg-slate py-2 w-[248px]">
+          <button className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-400 py-2 w-[248px]">
             Edit profile
           </button>
         </div>

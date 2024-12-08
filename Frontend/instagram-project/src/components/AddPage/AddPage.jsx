@@ -12,8 +12,10 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import BootstrapDialog from "@mui/material/Dialog";
 import BottomNav from "../Nav/BottomNav.jsx";
+import { useNavigate } from "react-router-dom";
 
-const AddPage = ({ open, onClose }) => {
+const AddPage = () => {
+  const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [imageContent, setImageContent] = useState("");
@@ -25,7 +27,7 @@ const AddPage = ({ open, onClose }) => {
 
     try {
       const res = await axios.post(
-        "http://85.250.88.33:3006/api/posts/",
+        "http://85.250.95.96:3006/api/posts/",
         {
           media: image,
           content,
@@ -69,19 +71,18 @@ const AddPage = ({ open, onClose }) => {
     }
   };
 
-  // const [open, setOpen] = React.useState(false);
-
+  const [open, setOpen] = React.useState(true);
+  console.log(open);
   // const handleClickOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/homepage");
+  };
+  // handleClickOpen();
 
   return (
-    <Box>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
+    <React.Fragment>
       <BootstrapDialog
-        open={open}
-        onClose={onClose}
         sx={{
           maxWidth: "100%",
           borderRadius: "10px",
@@ -97,7 +98,7 @@ const AddPage = ({ open, onClose }) => {
         }}
         // onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        // open={open}
+        open={open}
       >
         <DialogTitle
           sx={{
@@ -116,8 +117,7 @@ const AddPage = ({ open, onClose }) => {
         </DialogTitle>
         <IconButton
           aria-label="close"
-          // onClick={handleClose}
-          onClick={onClose}
+          onClick={handleClose}
           sx={{
             position: "absolute",
             right: 8,
@@ -256,7 +256,6 @@ const AddPage = ({ open, onClose }) => {
                 sharePost(uploadedImageUrl, imageContent);
                 handleClose();
                 window.location.reload();
-                // onClose()
               }}
               sx={{
                 textTransform: "none",
@@ -276,8 +275,8 @@ const AddPage = ({ open, onClose }) => {
         </DialogActions>
       </BootstrapDialog>
 
-      {/* <BottomNav index={2} onAddClick={onClose} /> */}
-    </Box>
+      <BottomNav index={2} />
+    </React.Fragment>
   );
 };
 
