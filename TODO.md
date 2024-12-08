@@ -33,6 +33,7 @@
     <!-- 25. add find user by username (img and name and id) -->
     <!-- 26. get follower posts by uid -->
 12. edit profile route
+13. filter all posts so current user dont see his own post
 
 ##TODOS frontend
 
