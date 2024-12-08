@@ -29,7 +29,7 @@ mongoose
 
 //middleware
 app.use(express.json());
-app.use(morgan("tiny"));
+app.use(morgan("combined"));
 
 // const corsOptions = {
 // origin: "http://localhost:5173", // Allow only this origin

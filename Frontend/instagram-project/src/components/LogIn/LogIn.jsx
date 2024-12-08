@@ -20,18 +20,27 @@ const LogIn = () => {
         "http://85.250.95.96:3006/api/users/login",
         { username, password }
       );
+
+  
+      // Store token and user in sessionStorage
       sessionStorage.setItem("authToken", data.token);
-
+      // sessionStorage.setItem("user", JSON.stringify(data.user)); // Convert user object to JSON string
+  
+      // Save user data to Redux
       dispatch(login({ token: data.token, user: data.user }));
+  
       console.log("Login successful:", data);
-
+  
+      // Navigate to homepage
       navigate("/homepage");
     } catch (error) {
       setWrongPassword(true);
       console.error("Login failed:", error);
     }
   };
+
   const isValidLogIn = username.trim() && password.trim();
+
 
   const inputCss =
     "bg-[rgb(18,18,18)] border border-slate-300 rounded-sm  px-[8px] pt-[9px] pb-[7px] m-1 text-xs";

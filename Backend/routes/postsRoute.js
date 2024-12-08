@@ -42,4 +42,9 @@ router.post(
   validator.validatePost.LikePostValidation,
   postController.likePostById
 );
+router.get(
+  "/user/:id",
+  validator.validatePost.getPostByUserIdValidation,
+  postController.getPostByUserId
+);
 export default router;
