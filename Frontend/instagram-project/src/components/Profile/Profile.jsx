@@ -14,7 +14,7 @@ const Profile = () => {
     const fetchData = async () => {
       const token = sessionStorage.getItem("authToken");
       try {
-        const response = await axios.get("http://85.250.88.33:3006/api/posts", {
+        const response = await axios.get("http://85.250.95.96:3006/api/posts", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -57,7 +57,7 @@ const Profile = () => {
           <p>Bio</p>
         </div>
         <div className="flex items-center justify-center gap-4">
-          <button className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-400 py-2 w-[248px]">
+          <button className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-800 py-2 w-[248px]">
             Edit profile
           </button>
         </div>
