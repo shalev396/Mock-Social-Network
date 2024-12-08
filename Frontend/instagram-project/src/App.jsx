@@ -46,6 +46,7 @@ function App() {
                 <Route path="/add" element={<AddPage />} />
                 <Route path="/reels" element={<ReelsPage />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/user/:id" element={<Profile />} />
                 <Route path="/p/:postid" element={<SinglePostPage />} />
                 <Route path="/p/:postid/comments" element={<CommentsPage />} />
               </Route>

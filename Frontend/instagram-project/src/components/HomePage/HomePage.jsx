@@ -30,7 +30,7 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, [token]); // Re-fetch if token changes
+  }, [token]); 
 
   return (
     <div className="bg-black text-white p-0" style={{ paddingBottom: "56px" }}>
