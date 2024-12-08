@@ -40,7 +40,7 @@ const Explore = () => {
   return (
     <div>
     <div>
-    <Search className={'w-'}/>
+    <Search className={''}/>
     </div>
       <div className="grid">
           <Grid images={posts} />

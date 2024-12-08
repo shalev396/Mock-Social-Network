@@ -24,6 +24,7 @@ const Post = ({ post, showBackButton }) => {
         authorName={post.author.username}
         profilePic={post.author.profilePic}
         media={post.media}
+        id={post.author._id}
       />
       <Body
         authorName={post.author.username}
