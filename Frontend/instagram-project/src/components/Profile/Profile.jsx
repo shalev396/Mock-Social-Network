@@ -85,7 +85,7 @@ const Profile = (userId) => {
     };
 
     fetchUserPosts();
-  }, [user, token, Dev_Url]);
+  }, [user, token, baseUrl]);
 
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
