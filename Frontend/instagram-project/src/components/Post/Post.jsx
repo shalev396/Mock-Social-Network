@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import Header from "./header";
-import Body from "./Body";
+import Body from "./body";
 
 const Post = ({ post, showBackButton }) => {
   const navigate = useNavigate(); // Move useNavigate inside the component
