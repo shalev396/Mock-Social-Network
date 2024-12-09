@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { login, logout } from "../Redux/authSlice";
+import { useSelector } from "react-redux";
 
 const AppInitializer = ({ setLoading }) => {
   const dispatch = useDispatch();

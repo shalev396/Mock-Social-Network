@@ -9,7 +9,6 @@ import { logout } from "../../Redux/authSlice.js";
 import LogoutIcon from "@mui/icons-material/Logout";
 import EditProfile from "./EditProfile.jsx";
 import { useParams } from "react-router-dom";
-import { use } from "react";
 
 const Profile = (userId) => {
   let viewUser = useSelector((state) => state.auth.user);

@@ -15,6 +15,7 @@ import BottomNav from "../Nav/BottomNav.jsx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
+
 const AddPage = () => {
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);

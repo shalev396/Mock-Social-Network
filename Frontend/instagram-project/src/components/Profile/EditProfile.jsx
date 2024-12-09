@@ -15,9 +15,9 @@ import BottomNav from "../Nav/BottomNav.jsx";
 
 import { useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
-const baseUrl = useSelector((state) => state.url.url);
 
 const EditProfile = ({ open, handleClose, user, token }) => {
+  const baseUrl = useSelector((state) => state.url.url);
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
 
