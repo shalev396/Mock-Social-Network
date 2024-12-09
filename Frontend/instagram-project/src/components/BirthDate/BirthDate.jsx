@@ -5,8 +5,10 @@ import instImg from "../../assets/images/Screenshot 2024-11-28 at 16.06.49.jpg";
 import { useSelector, useDispatch } from "react-redux";
 import { setBirthday } from "../../Redux/userSlice.js";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BirthDate = () => {
+  const navigate = useNavigate();
   const [isValidAge, setIsValidAge] = useState(true);
   const dispatch = useDispatch();
 
@@ -32,6 +34,7 @@ const BirthDate = () => {
         }
       );
       console.log(data);
+      navigate("/");
       return { data };
     } catch (error) {
       console.error("Log In failed, try again:", error);
