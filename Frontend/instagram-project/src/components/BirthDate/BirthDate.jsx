@@ -11,7 +11,7 @@ const BirthDate = () => {
   const navigate = useNavigate();
   const [isValidAge, setIsValidAge] = useState(true);
   const dispatch = useDispatch();
-
+  const baseUrl = useSelector((state) => state.url.url);
   const userState = useSelector((state) => state.user);
   console.log("Current Redux State:", userState);
   const trySignUp = async (
@@ -23,16 +23,13 @@ const BirthDate = () => {
   ) => {
     try {
       console.log(birthday, username);
-      const { data } = await axios.post(
-        "http://85.250.95.96:3006/api/users/signup",
-        {
-          username: username,
-          password: password,
-          email: email,
-          phoneNumber: phoneNumber,
-          birthday: birthday,
-        }
-      );
+      const { data } = await axios.post(`${baseUrl}/api/users/signup`, {
+        username: username,
+        password: password,
+        email: email,
+        phoneNumber: phoneNumber,
+        birthday: birthday,
+      });
       console.log(data);
       navigate("/");
       return { data };

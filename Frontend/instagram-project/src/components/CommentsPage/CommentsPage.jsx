@@ -12,7 +12,7 @@ const CommentsPage = () => {
   const { postid } = useParams(); // Fetch post ID from route
   const token = useSelector((state) => state.auth.token); // Access token from Redux
   const user = useSelector((state) => state.auth.user); // Access user from Redux state
-
+  const baseUrl = useSelector((state) => state.url.url);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +20,7 @@ const CommentsPage = () => {
   const fetchComments = async () => {
     try {
       const response = await axios.get(
-        `http://85.250.95.96:3006/api/comments/post/${postid}`,
+        `${baseUrl}/api/comments/post/${postid}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -61,7 +61,6 @@ const CommentsPage = () => {
     );
   }
 
-
   return (
     <div className="w-full flex flex-col h-screen">
       <div className="flex items-center border-b p-2 mb-4">
@@ -82,9 +81,10 @@ const CommentsPage = () => {
               />
               <div className="flex flex-col">
                 <p>
-                  <strong>{comment.author?.username || "Unknown"}</strong> {comment.text}
+                  <strong>{comment.author?.username || "Unknown"}</strong>{" "}
+                  {comment.text}
                 </p>
-                
+
                 <CommentLike
                   commentId={comment.id}
                   initialLikes={comment.likes.length}

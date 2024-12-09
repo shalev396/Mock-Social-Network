@@ -24,12 +24,12 @@ const AddPage = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
-
+  const baseUrl = useSelector((state) => state.url.url);
   const sharePost = async (image, content) => {
     console.log("baba");
     try {
       const res = await axios.post(
-        "http://85.250.95.96:3006/api/posts/",
+        `${baseUrl}/api/posts/`,
         {
           media: image,
           content,

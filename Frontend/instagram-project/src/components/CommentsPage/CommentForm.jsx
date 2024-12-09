@@ -6,7 +6,7 @@ const CommentForm = ({ postId, onNewComment }) => {
   const [text, setText] = useState(""); // State for the comment text
   const user = useSelector((state) => state.auth.user); // Access user from Redux state
   const token = useSelector((state) => state.auth.token); // Access token from Redux state
-
+  const baseUrl = useSelector((state) => state.url.url);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,15 +22,11 @@ const CommentForm = ({ postId, onNewComment }) => {
     };
 
     try {
-      const response = await axios.post(
-        "http://85.250.95.96:3006/api/comments",
-        newComment,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the request headers
-          },
-        }
-      );
+      const response = await axios.post(`${baseUrl}/api/comments`, newComment, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the request headers
+        },
+      });
 
       console.log("Comment created:", response.data);
 

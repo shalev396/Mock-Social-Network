@@ -11,22 +11,20 @@ import EditProfile from "./EditProfile.jsx";
 import { useParams } from "react-router-dom";
 import { use } from "react";
 
-
 const Profile = (userId) => {
   let viewUser = useSelector((state) => state.auth.user);
   const [user, setUser] = useState(viewUser);
   const [posts, setPosts] = useState([]);
   const token = useSelector((state) => state.auth.token);
-  const Dev_Url = "http://85.250.95.96:3006/";
+  const baseUrl = useSelector((state) => state.url.url);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openEditProfileDialog, setOpenEditProfileDialog] = useState(false);
-  console.log(user.followers , viewUser._id);
-const bool =   user.followers.includes(viewUser._id.toString())
+  console.log(user.followers, viewUser._id);
+  const bool = user.followers.includes(viewUser._id.toString());
 
   const [isFollow, setIsFollow] = useState(false);
   console.log(isFollow);
-  
 
   const { id } = useParams(); // Get the post ID from the URL
   // const fetchData = async () =>{ try{
@@ -34,38 +32,35 @@ const bool =   user.followers.includes(viewUser._id.toString())
   //   headers: {
   //     Authorization: `Bearer ${token}`,
   //   },}
-  
-// );
-// console.log(response.data);
-// setUser(response.data)
-// }catch{
-//   console.error("Error fetching user posts:", error);
-//   navigate("/");
-// }}
 
+  // );
+  // console.log(response.data);
+  // setUser(response.data)
+  // }catch{
+  //   console.error("Error fetching user posts:", error);
+  //   navigate("/");
+  // }}
 
-useEffect(() => {
-  const fetchData = async () => {
-    if (!id) return ; // Exit if no ID is provided
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return; // Exit if no ID is provided
 
-    try {
-      const response = await axios.get(`${Dev_Url}api/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(response.data);
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error fetching user posts:", error);
-      navigate("/"); // Redirect to home on error
-    }
-  };
+      try {
+        const response = await axios.get(`${baseUrl}/api/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user posts:", error);
+        navigate("/"); // Redirect to home on error
+      }
+    };
 
-  fetchData();
-}, [id, token, navigate]);
-
-  
+    fetchData();
+  }, [id, token, navigate]);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -76,7 +71,7 @@ useEffect(() => {
 
       try {
         const response = await axios.get(
-          `${Dev_Url}api/posts/user/${user._id}`,
+          `${baseUrl}/api/posts/user/${user._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -84,7 +79,7 @@ useEffect(() => {
           }
         );
         setPosts(response.data);
-        setIsFollow(user.followers.includes(viewUser._id.toString()))
+        setIsFollow(user.followers.includes(viewUser._id.toString()));
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
@@ -109,7 +104,7 @@ useEffect(() => {
   async function handleFollow() {
     try {
       const response = await axios.post(
-        `${Dev_Url}api/users/follow/${id}`, // Ensure `Dev_Url` and `id` are correct
+        `${baseUrl}/api/users/follow/${id}`, // Ensure `Dev_Url` and `id` are correct
         {}, // No body needed, pass an empty object
         {
           headers: {
@@ -118,17 +113,15 @@ useEffect(() => {
         }
       );
       console.log(response.data);
-      setIsFollow(!isFollow)
+      setIsFollow(!isFollow);
     } catch (error) {
       console.error("Error following user:", error);
     }
   }
-  
-
 
   const openDialog = () => setOpenEditProfileDialog(true);
   const closeDialog = () => setOpenEditProfileDialog(false);
-  
+
   return (
     <div className="flex items-center justify-center w-[450px]">
       <div className="m-4">
@@ -136,14 +129,17 @@ useEffect(() => {
           <h1 className=" text-xl font-bold p-4">
             {user?.username || "Username"}
           </h1>
-          {!id ? (          <button
-            onClick={handleLogout}
-            className="font-bold text-sm border-1 rounded-md border border-gray-800 mt-4 py-2 w-[100px] hover:bg-gray-800"
-          >
-            Log Out
-            <LogoutIcon sx={{ fontSize: 20 }} className="pl-2" />
-          </button>) : ('')}
-
+          {!id ? (
+            <button
+              onClick={handleLogout}
+              className="font-bold text-sm border-1 rounded-md border border-gray-800 mt-4 py-2 w-[100px] hover:bg-gray-800"
+            >
+              Log Out
+              <LogoutIcon sx={{ fontSize: 20 }} className="pl-2" />
+            </button>
+          ) : (
+            ""
+          )}
         </div>
         <div>
           <div className="flex items-center justify-center gap-4 p-4">
@@ -176,19 +172,21 @@ useEffect(() => {
           <p>{user?.bio || "Bio"}</p>
         </div>
         <div className="flex items-center justify-center gap-4">
-        {!id ? (
-          <button
-            onClick={openDialog}
-            className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-800 py-2 w-[248px] hover:bg-gray-700"
-          >
-            Edit profile
-          </button>):
-          (<button
-           onClick={handleFollow}
-           className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-800 py-2 w-[248px] hover:bg-gray-700"
-           >
-            {isFollow ? 'unFollowed' : 'follow' }
-          </button>)}
+          {!id ? (
+            <button
+              onClick={openDialog}
+              className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-800 py-2 w-[248px] hover:bg-gray-700"
+            >
+              Edit profile
+            </button>
+          ) : (
+            <button
+              onClick={handleFollow}
+              className="font-bold text-sm border-0 rounded-md mt-4 bg-gray-800 py-2 w-[248px] hover:bg-gray-700"
+            >
+              {isFollow ? "unFollowed" : "follow"}
+            </button>
+          )}
         </div>
         <div className="grid">
           <Grid images={posts} />

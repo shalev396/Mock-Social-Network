@@ -5,6 +5,7 @@ import { login, logout } from "../Redux/authSlice";
 
 const AppInitializer = ({ setLoading }) => {
   const dispatch = useDispatch();
+  const baseUrl = useSelector((state) => state.url.url);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -30,12 +31,9 @@ const AppInitializer = ({ setLoading }) => {
 
       try {
         // console.log("AppInitializer: Validating token...");
-        const response = await axios.get(
-          "http://85.250.95.96:3006/api/users/self",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.get(`${baseUrl}/api/users/self`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         // console.log(
         //   "AppInitializer: Token validation successful. User:",

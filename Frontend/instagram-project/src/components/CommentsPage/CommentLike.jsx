@@ -9,7 +9,7 @@ const CommentLike = ({ commentId, initialLikes, isLiked }) => {
   const [liked, setLiked] = useState(isLiked); // State to track if the comment is liked
   const [likesCount, setLikesCount] = useState(initialLikes); // State to track likes count
   const [isAnimating, setIsAnimating] = useState(false); // State to handle the animation
-
+  const baseUrl = useSelector((state) => state.url.url);
   const handleToggleLike = async () => {
     try {
       // Trigger animation
@@ -21,7 +21,7 @@ const CommentLike = ({ commentId, initialLikes, isLiked }) => {
 
       // Make API call to toggle like
       const response = await axios.post(
-        `http://85.250.95.96:3006/api/comments/like/${commentId}`,
+        `${baseUrl}/api/comments/like/${commentId}`,
         {}, // No body required
         {
           headers: {
