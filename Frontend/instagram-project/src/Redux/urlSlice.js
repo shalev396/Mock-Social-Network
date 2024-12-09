@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+//http://85.250.95.96:3006
 const initialState = {
-  url: "http://85.250.95.96:3006",
+  url: "https://mock-social-network.onrender.com",
 };
 
 const urlSlice = createSlice({
