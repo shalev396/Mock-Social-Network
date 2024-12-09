@@ -22,7 +22,7 @@ const BirthDate = () => {
     try {
       console.log(birthday, username);
       const { data } = await axios.post(
-        "http://85.250.88.33:3006/api/users/signup",
+        "http://85.250.95.96:3006/api/users/signup",
         {
           username: username,
           password: password,
