@@ -5,11 +5,13 @@ import instImg from "../../assets/images/Screenshot 2024-11-28 at 16.06.49.jpg";
 import { useSelector, useDispatch } from "react-redux";
 import { setBirthday } from "../../Redux/userSlice.js";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BirthDate = () => {
+  const navigate = useNavigate();
   const [isValidAge, setIsValidAge] = useState(true);
   const dispatch = useDispatch();
-
+  const baseUrl = useSelector((state) => state.url.url);
   const userState = useSelector((state) => state.user);
   console.log("Current Redux State:", userState);
   const trySignUp = async (
@@ -21,17 +23,15 @@ const BirthDate = () => {
   ) => {
     try {
       console.log(birthday, username);
-      const { data } = await axios.post(
-        "http://85.250.88.33:3006/api/users/signup",
-        {
-          username: username,
-          password: password,
-          email: email,
-          phoneNumber: phoneNumber,
-          birthday: birthday,
-        }
-      );
+      const { data } = await axios.post(`${baseUrl}/api/users/signup`, {
+        username: username,
+        password: password,
+        email: email,
+        phoneNumber: phoneNumber,
+        birthday: birthday,
+      });
       console.log(data);
+      navigate("/");
       return { data };
     } catch (error) {
       console.error("Log In failed, try again:", error);

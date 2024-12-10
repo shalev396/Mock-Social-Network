@@ -10,7 +10,7 @@ const SinglePostPage = () => {
   const [post, setPost] = useState(null); // State to store the post data
   const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate(); // For navigation to the Not Found page
-
+  const baseUrl = useSelector((state) => state.url.url);
   const token = useSelector((state) => state.auth.token); // Access token from Redux state
 
   useEffect(() => {
@@ -22,14 +22,11 @@ const SinglePostPage = () => {
       }
 
       try {
-        const response = await axios.get(
-          `http://85.250.95.96:3006/api/posts/${postid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${baseUrl}/api/posts/${postid}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.data.length === 0) {
           // If the post doesn't exist, navigate to the Not Found page
