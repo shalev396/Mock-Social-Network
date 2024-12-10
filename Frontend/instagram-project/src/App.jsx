@@ -13,7 +13,7 @@ import AddPage from "./components/AddPage/AddPage";
 import ReelsPage from "./components/ReelsPage/ReelsPage";
 import SinglePostPage from "./components/SinglePostPage/SinglePostPage";
 import CommentsPage from "./components/CommentsPage/CommentsPage";
-import HomePage from "./components/homePage/HomePage";
+import HomePage from "./components/HomePage/HomePage";
 import NotFound from "./components/NotFound";
 import AppInitializer from "./utils/Applnitializer";
 import ProtectedRoute from "./utils/ProtectedRoute";

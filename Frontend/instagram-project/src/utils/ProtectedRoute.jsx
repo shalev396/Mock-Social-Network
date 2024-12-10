@@ -25,6 +25,7 @@ const ProtectedRoute = () => {
   const token = useSelector((state) => state.auth.token); // Get token from Redux
   const [isAuthenticated, setIsAuthenticated] = useState(null); // Authentication state
   const dispatch = useDispatch();
+  const baseUrl = useSelector((state) => state.url.url);
 
   useEffect(() => {
     const validateToken = async () => {
@@ -35,7 +36,7 @@ const ProtectedRoute = () => {
 
       try {
         // Validate the token
-        await axios.get("http://85.250.95.96:3006/api/users/self", {
+        await axios.get(`${baseUrl}/api/users/self`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setIsAuthenticated(true); // Token is valid
