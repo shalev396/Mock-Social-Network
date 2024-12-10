@@ -15,9 +15,9 @@ import BottomNav from "../Nav/BottomNav.jsx";
 
 import { useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
-const Dev_Url = "http://85.250.95.96:3006/";
 
 const EditProfile = ({ open, handleClose, user, token }) => {
+  const baseUrl = useSelector((state) => state.url.url);
   const [image, setImage] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
 
@@ -32,7 +32,7 @@ const EditProfile = ({ open, handleClose, user, token }) => {
     console.log(user);
     try {
       const res = await axios.post(
-        `${Dev_Url}api/users/edit`,
+        `${baseUrl}/api/users/edit`,
         {
           username: username,
           bio: bio,

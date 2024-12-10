@@ -6,13 +6,20 @@ import { ChatBubbleBottomCenterIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const Body = ({ isLikedByMe, postId, initialLikes, commentsCount, content, authorName }) => {
+const Body = ({
+  isLikedByMe,
+  postId,
+  initialLikes,
+  commentsCount,
+  content,
+  authorName,
+}) => {
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token); // Access token from Redux state
   const [isLiked, setIsLiked] = useState(isLikedByMe); // Track whether the post is liked
   const [likesCount, setLikesCount] = useState(initialLikes); // Track the number of likes
   const [isAnimating, setIsAnimating] = useState(false); // State to handle the animation
-
+  const baseUrl = useSelector((state) => state.url.url);
   const handleLikeToggle = async () => {
     try {
       // Trigger animation
@@ -21,7 +28,7 @@ const Body = ({ isLikedByMe, postId, initialLikes, commentsCount, content, autho
 
       // Send API request to toggle like
       const response = await axios.post(
-        `http://85.250.95.96:3006/api/posts/like/${postId}`,
+        `${baseUrl}/api/posts/like/${postId}`,
         {}, // No body required
         {
           headers: {
@@ -47,7 +54,10 @@ const Body = ({ isLikedByMe, postId, initialLikes, commentsCount, content, autho
       {/* Action Section */}
       <div className="flex items-center gap-6">
         {/* Like Button */}
-        <div className="flex items-center cursor-pointer" onClick={handleLikeToggle}>
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={handleLikeToggle}
+        >
           {isLiked ? (
             <SolidHeart
               className={`w-6 h-6 text-red-500 transition-transform transform ${

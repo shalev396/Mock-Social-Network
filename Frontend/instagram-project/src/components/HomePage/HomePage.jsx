@@ -6,7 +6,7 @@ import BottomNav from "../Nav/BottomNav";
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
-
+  const baseUrl = useSelector((state) => state.url.url);
   const token = useSelector((state) => state.auth.token); // Access token from Redux
 
   useEffect(() => {
@@ -16,21 +16,19 @@ const HomePage = () => {
         return;
       }
       try {
-        const response = await axios.get("http://85.250.95.96:3006/api/posts", {
+        const response = await axios.get(`${baseUrl}/api/posts`, {
           headers: {
             Authorization: `Bearer ${token}`, // Include token in headers
           },
         });
         setPosts(response.data);
       } catch (error) {
-
         console.error("Error fetching posts:", error);
-
       }
     };
 
     fetchData();
-  }, [token]); 
+  }, [token]);
 
   return (
     <div className="bg-black text-white p-0" style={{ paddingBottom: "56px" }}>
