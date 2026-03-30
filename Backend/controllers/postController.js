@@ -1,7 +1,5 @@
 //imports
 import express from "express";
-import bcrypt from "bcrypt";
-import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 //import models

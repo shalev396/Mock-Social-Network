@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-dotenv.config();
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -57,22 +55,22 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+function passwordPepper() {
+  return process.env.ENCRYPTION_KEY;
+}
+
 // hash the password
 userSchema.pre("save", async function (next) {
-  //prevent hashing when password did not changed
   if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(
-    this.password + "" + process.env.ENCRYPTION_KEY,
-    10
-  );
+  const plain = String(this.password);
+  this.password = await bcrypt.hash(plain + passwordPepper(), 10);
   next();
 });
 
 userSchema.methods.comparePassword = async function (password) {
-  return await bcrypt.compare(
-    password + "" + process.env.ENCRYPTION_KEY,
-    this.password
-  );
+  const plain = String(password);
+  const pepper = passwordPepper();
+  if (await bcrypt.compare(plain + pepper, this.password)) return true;
 };
 
 export default mongoose.model("User", userSchema);

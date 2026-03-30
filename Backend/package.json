@@ -2,22 +2,30 @@
   "name": "mock-social-network",
   "version": "1.0.0",
   "description": "build a mock social network application inspired by instagram",
-  "main": "app.js",
+  "main": "handler.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "serverless offline --stage prod",
+    "deploy": "serverless deploy --stage prod",
+    "remove": "serverless remove --stage prod"
   },
   "author": "shalev396 ,ron959 ,sasha",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "serverless": "^4.4.0",
+    "serverless-esbuild": "^1.57.0",
+    "serverless-offline": "^14.4.0",
+    "serverless-offline-watcher": "^1.1.0"
   }
 }
