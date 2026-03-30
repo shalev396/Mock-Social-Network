@@ -1,18 +1,23 @@
 //imports
-import bcrypt from "bcrypt";
-import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import authenticator from "../middleware/Authenticator.js";
 //import models
 import User from "../models/user.js";
 import mongoose from "mongoose";
-dotenv.config();
+
 const SECRET_KEY = process.env.SECRET_KEY;
+
+function normalizeEmail(email) {
+  if (typeof email !== "string") return email;
+  return email.trim().toLowerCase();
+}
+
 async function createUser(req, res) {
   try {
     const user = new User({
       username: req.body.username,
-      email: req.body.email,
+      email: normalizeEmail(req.body.email),
       profilePic: req.body.profilePic,
       password: req.body.password,
       birthday: req.body.birthday,
@@ -32,12 +37,17 @@ async function createUser(req, res) {
 
 async function loginUser(req, res) {
   try {
-    const { username, password } = req.body;
+    const raw =
+      typeof req.body.username === "string" ? req.body.username.trim() : "";
+    const password =
+      typeof req.body.password === "string" ? req.body.password : "";
+    const emailLookup = raw.includes("@") ? normalizeEmail(raw) : raw;
     const user = await User.findOne({
       $or: [
-        { username: username },
-        { email: username },
-        { phoneNumber: username },
+        { username: raw },
+        { email: raw },
+        { email: emailLookup },
+        { phoneNumber: raw },
       ],
     });
     if (!user)
@@ -75,19 +85,20 @@ async function loginUser(req, res) {
 async function verifyUnique(req, res) {
   try {
     const { username, email, phoneNumber } = req.body;
+    const normEmail = normalizeEmail(email);
 
     // Single query to check for any matching documents
     const existingUser = await User.findOne({
       $or: [
         { username: username },
-        { email: email },
+        { email: normEmail },
         { phoneNumber: phoneNumber },
       ],
     });
 
     const isUniqueUsername =
       !existingUser || existingUser.username !== username;
-    const isUniqueEmail = !existingUser || existingUser.email !== email;
+    const isUniqueEmail = !existingUser || existingUser.email !== normEmail;
     const isUniquePhoneNumber =
       !existingUser || existingUser.phoneNumber !== phoneNumber;
 
@@ -126,7 +137,7 @@ async function getUserById(req, res) {
     //do not get some details
     const user = await User.findOne(
       { _id: req.params.id },
-      { password: 0, email: 0, phoneNumber: 0, birthday: 0 }
+      { password: 0, email: 0, phoneNumber: 0, birthday: 0 },
     );
     return res.status(200).json(user);
   } catch (error) {
@@ -198,7 +209,7 @@ async function editUser(req, res) {
     const updatedUser = await User.findOneAndUpdate(
       { _id: uid },
       { $set: updates },
-      { new: false, upsert: true }
+      { new: false, upsert: true },
     );
     res.status(200).json(updatedUser);
   } catch (error) {
