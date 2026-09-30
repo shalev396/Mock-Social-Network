@@ -83,7 +83,7 @@ const BirthDate = () => {
           </p>
 
           <p className="pt-4">
-            This won't be a part of your public profile.
+            This won&apos;t be a part of your public profile.
             <br />
             <span>
               <a

@@ -1,5 +1,4 @@
 import express from "express";
-import morgan from "morgan";
 import cors from "cors";
 import usersRoutes from "./routes/usersRoute.js";
 import postsRoutes from "./routes/postsRoute.js";

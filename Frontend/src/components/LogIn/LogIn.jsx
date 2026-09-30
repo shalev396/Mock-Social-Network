@@ -88,7 +88,7 @@ const LogIn = () => {
         </div>
       </div>
       <div className={divContainer}>
-        Don't have an account?
+        Don&apos;t have an account?
         <Link to="/signup">
           <button className="text-blue-500 font-bold">Sign Up</button>
         </Link>

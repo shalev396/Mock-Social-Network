@@ -28,6 +28,12 @@ provider:
   timeout: 30
   logRetentionInDays: 30
 
+  # Fixed execution role name: MongoDB Atlas keys the MONGODB-AWS database user on this ARN
+  # (output ApiRoleArn), so it must not change between deploys.
+  iam:
+    role:
+      name: ${self:service}-${sls:stage}-api
+
   logs:
     restApi: false
 
@@ -51,7 +57,7 @@ provider:
       maxAge: 86400
 
   environment:
-    MONGODB_URI: ${env:MONGODB_URI}
+    DATABASE_URL: ${env:DATABASE_URL}
     SECRET_KEY: ${env:SECRET_KEY}
     ENCRYPTION_KEY: ${env:ENCRYPTION_KEY}
 
@@ -240,6 +246,15 @@ resources:
           EvaluateTargetHealth: false
 
   Outputs:
+    ApiRoleArn:
+      Description: Lambda execution role; register it in Atlas as an AWS IAM database user (MONGODB-AWS)
+      Value:
+        Fn::GetAtt:
+          - IamRoleLambdaExecution
+          - Arn
+      Export:
+        Name: ${self:service}-${self:provider.stage}-ApiRoleArn
+
     S3ClientBucketName:
       Description: Upload the Vite build here (CI/CD)
       Value:

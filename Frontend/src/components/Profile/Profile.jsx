@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import BottomNav from "../Nav/BottomNav";
@@ -11,7 +11,7 @@ import EditProfile from "./EditProfile.jsx";
 import { useParams } from "react-router-dom";
 import { baseURL } from "../../config/apiBase.js";
 
-const Profile = (userId) => {
+const Profile = () => {
   let viewUser = useSelector((state) => state.auth.user);
   const [user, setUser] = useState(viewUser);
   const [posts, setPosts] = useState([]);
@@ -20,7 +20,6 @@ const Profile = (userId) => {
   const navigate = useNavigate();
   const [openEditProfileDialog, setOpenEditProfileDialog] = useState(false);
   console.log(user.followers, viewUser._id);
-  const bool = user.followers.includes(viewUser._id.toString());
 
   const [isFollow, setIsFollow] = useState(false);
   console.log(isFollow);
@@ -85,7 +84,7 @@ const Profile = (userId) => {
     };
 
     fetchUserPosts();
-  }, [user, token]);
+  }, [user, token, viewUser._id]);
 
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");

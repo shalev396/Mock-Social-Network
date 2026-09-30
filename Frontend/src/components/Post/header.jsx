@@ -1,5 +1,3 @@
-import React from "react";
-import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 
 const Header = ({ authorName, profilePic, media , id}) => {
