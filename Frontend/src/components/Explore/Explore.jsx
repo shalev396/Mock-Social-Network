@@ -1,4 +1,3 @@
-import React from "react";
 import BottomNav from "../Nav/BottomNav";
 import Grid from "../Profile/Grid";
 import Search from "./Search";

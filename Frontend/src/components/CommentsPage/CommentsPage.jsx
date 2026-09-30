@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -15,42 +15,43 @@ const CommentsPage = () => {
   const user = useSelector((state) => state.auth.user); // Access user from Redux state
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // Fetch comments from the API
-  const fetchComments = async () => {
-    try {
-      const response = await axios.get(
-        `${baseURL}/comments/post/${postid}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setComments(response.data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-      if (error.response && error.response.status === 401) {
-        navigate("/not-found", { replace: true });
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch comments on mount and when postid changes
+  // Fetch comments on mount, when postid changes, and after a new comment
   useEffect(() => {
-    if (postid && token) {
-      fetchComments();
-    } else {
+    if (!postid || !token) {
       console.error("Missing post ID or token. Redirecting to login...");
       navigate("/", { replace: true });
+      return;
     }
-  }, [postid, token, navigate]);
+
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(
+          `${baseURL}/comments/post/${postid}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setComments(response.data);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        if (error.response && error.response.status === 401) {
+          navigate("/not-found", { replace: true });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [postid, token, navigate, refreshKey]);
 
   // Update comments by re-fetching after a new comment is added
   const handleNewComment = () => {
-    fetchComments();
+    setRefreshKey((key) => key + 1);
   };
 
   if (loading) {

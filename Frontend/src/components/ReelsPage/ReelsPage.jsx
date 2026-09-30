@@ -1,4 +1,3 @@
-import React from "react";
 import BottomNav from "../Nav/BottomNav";
 const ReelsPage = () => {
   return (

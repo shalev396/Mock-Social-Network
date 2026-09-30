@@ -1,12 +1,9 @@
 //imports
-import express from "express";
-import mongoose from "mongoose";
 
 //import models
 import Post from "../models/post.js";
 import User from "../models/user.js";
 import Comment from "../models/comment.js";
-import post from "../models/post.js";
 
 async function createPost(req, res) {
   try {

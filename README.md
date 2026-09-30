@@ -57,3 +57,21 @@ npm run dev
 
 Point the frontend at your local API (see `Frontend/src/config/apiBase.js` and env conventions in the Frontend).
 
+
+## MongoDB Atlas IAM authentication
+
+The API authenticates to Atlas as an AWS IAM role (`MONGODB-AWS`) instead of a password. The Lambda execution role name is fixed to `mock-social-network-<stage>-api` (stack output `ApiRoleArn`), so its ARN survives deploys. `DATABASE_URL` then carries no credentials:
+
+```
+mongodb+srv://<cluster-host>/<database>?authSource=%24external&authMechanism=MONGODB-AWS&retryWrites=true&w=majority&appName=mock-social-network-<stage>
+```
+
+The driver (with its optional `aws4` and `@aws-sdk/credential-providers` dependencies; without `aws4` it fails with "Optional module `aws4` not found") signs an STS request with whatever AWS credentials the process has (Lambda role, CI OIDC role, local SSO profile), and Atlas matches the caller's role ARN to a database user. The same URL works locally and on Lambda. No IAM policy is involved; each identity needs an Atlas database user of type **AWS IAM → IAM Role**:
+
+| Identity                              | Atlas roles                                                  |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `mock-social-network-<stage>-api`     | `readWrite` + `dbAdmin` on that stage's database only        |
+| CI OIDC role (`my-github-actions-role`) | `readWriteAnyDatabase` + `dbAdminAnyDatabase`              |
+| Local SSO role                        | `readWriteAnyDatabase` + `dbAdminAnyDatabase`                |
+
+Register an assumed role by its ARN **without the IAM path**: the SSO role `arn:aws:iam::<account>:role/aws-reserved/sso.amazonaws.com/<region>/AWSReservedSSO_…` becomes `arn:aws:iam::<account>:role/AWSReservedSSO_…`. Locally, run `aws sso login` when the session expires. The Atlas IP access list stays `0.0.0.0/0` because Lambda has no fixed IP. Atlas checks each new connection with STS, so the connection opened at cold start is reused across invocations.

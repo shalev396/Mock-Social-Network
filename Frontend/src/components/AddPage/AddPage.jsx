@@ -29,7 +29,7 @@ const AddPage = () => {
   const sharePost = async (image, content) => {
     console.log("baba");
     try {
-      const res = await axios.post(
+      await axios.post(
         `${baseURL}/posts/`,
         {
           media: image,

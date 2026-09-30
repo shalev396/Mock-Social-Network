@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { login, logout } from "../Redux/authSlice";

@@ -4,7 +4,7 @@
 # - Repository variable: AWS_REGION (must match serverless provider region)
 # - Repository secrets: AWS_ACCOUNT_ID, SERVERLESS_ACCESS_KEY (if using Serverless Dashboard org/app),
 #   HOSTED_ZONE_ID, CERTIFICATE_ARN
-# - Environment (e.g. prod) secrets: DOMAIN_NAME, MONGODB_URI, SECRET_KEY, ENCRYPTION_KEY
+# - Environment (e.g. prod) secrets: DOMAIN_NAME, DATABASE_URL, SECRET_KEY, ENCRYPTION_KEY
 # - IAM OIDC: trust this repo on role arn:aws:iam::<AWS_ACCOUNT_ID>:role/my-github-actions-role
 #
 # CloudFormation stack name: mock-social-network-<stage> (service + stage from serverless.yml)
@@ -35,7 +35,7 @@ jobs:
       HOSTED_ZONE_ID: ${{ secrets.HOSTED_ZONE_ID }}
       CERTIFICATE_ARN: ${{ secrets.CERTIFICATE_ARN }}
       DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
     steps:
@@ -73,7 +73,7 @@ jobs:
         with:
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/my-github-actions-role
-      - run: npm ci
+      - run: npm install
         working-directory: Frontend
       - run: npm run build
         working-directory: Frontend

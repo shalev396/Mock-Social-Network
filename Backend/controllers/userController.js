@@ -1,10 +1,7 @@
 //imports
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import authenticator from "../middleware/Authenticator.js";
 //import models
 import User from "../models/user.js";
-import mongoose from "mongoose";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 

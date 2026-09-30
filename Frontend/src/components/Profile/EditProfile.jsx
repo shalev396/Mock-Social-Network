@@ -30,7 +30,7 @@ const EditProfile = ({ open, handleClose, user, token }) => {
   const editProfile = async () => {
     console.log(user);
     try {
-      const res = await axios.post(
+      await axios.post(
         `${baseURL}/users/edit`,
         {
           username: username,
