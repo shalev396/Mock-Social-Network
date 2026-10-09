@@ -77,6 +77,8 @@ custom:
 
   clientBucketName: ${env:DOMAIN_NAME}
 
+  wafWebAclArn: ${env:WAF_WEB_ACL_ARN, ''}
+
   viewerCertificate:
     AcmCertificateArn: ${env:CERTIFICATE_ARN}
     SslSupportMethod: sni-only
@@ -121,6 +123,12 @@ functions:
 
 resources:
   Description: ${self:custom.appDisplayName} — Lambda API, S3 client, CloudFront, Route 53 (${self:provider.stage})
+  Conditions:
+    HasWafWebAcl:
+      Fn::Not:
+        - Fn::Equals:
+            - ${self:custom.wafWebAclArn}
+            - ''
   Resources:
     ClientFilesBucket:
       Type: AWS::S3::Bucket
@@ -179,6 +187,11 @@ resources:
             - ${env:DOMAIN_NAME}
           ViewerCertificate: ${self:custom.viewerCertificate}
           DefaultRootObject: index.html
+          WebACLId:
+            Fn::If:
+              - HasWafWebAcl
+              - ${self:custom.wafWebAclArn}
+              - Ref: AWS::NoValue
 
           DefaultCacheBehavior:
             TargetOriginId: ClientFilesOrigin
